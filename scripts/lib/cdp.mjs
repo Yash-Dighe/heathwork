@@ -1,10 +1,10 @@
 // scripts/lib/cdp.mjs — shared headless-Chrome + DevTools-Protocol plumbing for the
-// StarNet visual/behavioral test harness. Extracted from uishoot.mjs so the screenshotter
+// Hearthwork visual/behavioral test harness. Extracted from uishoot.mjs so the screenshotter
 // (uishoot/shoot), the interactive driver (uiplay), the probe, and the P2 scenario runner
 // all speak one CDP dialect and capture frames the same way.
 //
 // WHY CDP + a fixed wall-clock wait (not preview_screenshot / --virtual-time-budget):
-// StarNet's canvas animates every rAF and never goes "idle", so the idle-based capture paths
+// Hearthwork's canvas animates every rAF and never goes "idle", so the idle-based capture paths
 // hang forever. Driving Chrome over CDP and capturing on a timer is the proven unlock.
 //
 // Zero dependencies: Node 22 has global fetch + global WebSocket.

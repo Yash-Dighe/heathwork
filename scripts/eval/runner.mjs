@@ -56,7 +56,7 @@ function subjectMeta(opts) {
     executableInfo = { path: executable, bytes: st.size, sha256: sha256File(executable) };
   }
   return {
-    name: 'StarNet', version: pkg.version || '', commit: git(['rev-parse', 'HEAD']),
+    name: 'Hearthwork', version: pkg.version || '', commit: git(['rev-parse', 'HEAD']),
     sourceTree: { algorithm: 'git-tree', value: git(['rev-parse', 'HEAD^{tree}']) },
     executable: executableInfo,
     platform: { platform: process.platform, arch: process.arch, node: process.version },
@@ -181,7 +181,7 @@ function compare(opts) {
   if (opts['reference-manifest']) evidence.referenceManifest = manifestEvidence(opts['reference-manifest']);
   const receipt = makeReceipt({ kind: 'parity', contract, subject: subjectMeta(opts), reference: referenceMeta(opts, contract), result, evidence });
   writeSignedReceipt(opts.receipt || join('.dogfood', 'eval', 'parity-receipt.json'), receipt, opts);
-  console.log(`[agent-eval] PARITY ${result.pass ? 'PASS' : 'FAIL'} StarNet=${result.summary.starnetPassRatePct.toFixed(1)}% reference=${result.summary.referencePassRatePct.toFixed(1)}% gap=${result.summary.gapPoints.toFixed(1)}pt`);
+  console.log(`[agent-eval] PARITY ${result.pass ? 'PASS' : 'FAIL'} Hearthwork=${result.summary.starnetPassRatePct.toFixed(1)}% reference=${result.summary.referencePassRatePct.toFixed(1)}% gap=${result.summary.gapPoints.toFixed(1)}pt`);
   return result.pass ? 0 : 1;
 }
 
@@ -221,7 +221,7 @@ function performanceProbe(opts) {
   if (opts['subject-manifest']) evidence.subjectManifest = manifestEvidence(opts['subject-manifest']);
   if (opts['reference-manifest']) evidence.referenceManifest = manifestEvidence(opts['reference-manifest']);
   const receipt = makeReceipt({ kind: 'performance', contract, subject: subjectMeta(opts), reference: referenceMeta(opts, contract), result, evidence,
-    limitations: ['single preflight only; StarNet provider run failed before first token', 'desktop cold boot and 48-hour resource soak remain unmeasured'] });
+    limitations: ['single preflight only; Hearthwork provider run failed before first token', 'desktop cold boot and 48-hour resource soak remain unmeasured'] });
   writeSignedReceipt(opts.receipt || join('.dogfood', 'eval', 'performance-probe-receipt.json'), receipt, opts);
   console.log(`[agent-eval] PERFORMANCE PROBE ${result.pass ? 'PASS' : 'FAIL'} StarNetBoot=${Number(result.measurements.starnetInstalledSidecarBootMs || 0).toFixed(1)}ms`);
   return result.pass ? 0 : 1;

@@ -153,7 +153,8 @@ const KeyCTA = (() => {
     if (!gap) return;                                                               // re-check at delivery: a key may have landed between arm() and here
     spoke = true;
     let nm = ''; try { if (typeof App !== 'undefined' && App.currentAgent) { const a = App.currentAgent(); nm = (a && a.name) || ''; } } catch (_) {}
-    const label = gap.provider.toUpperCase();
+    // 'starnet' is the managed-credits provider's internal id (kept for storage compatibility); show the brand
+    const label = gap.provider === 'starnet' ? ((typeof BRAND !== 'undefined' && BRAND.nameUpper) || 'HEARTHWORK') : gap.provider.toUpperCase();
     const who = nm ? nm.toLowerCase() + ' — ' : '';
     if (gap.kind === 'nomodel') {
       spokenLine = Chat.localLine(who + 'no model is selected for ' + label + '. choose a model to send a message.');

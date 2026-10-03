@@ -10,16 +10,16 @@
  *   (including its cryptographic artifact/.sig verification) — only the asset-base
  *   URL differs from production.
  *
- * ISOLATION: canary builds carry productName "StarNet Canary" + identifier
- *   app.hearthwork.desktop.canary, so they install SIDE BY SIDE with the real StarNet —
+ * ISOLATION: canary builds carry productName "Hearthwork Canary" + identifier
+ *   app.hearthwork.desktop.canary, so they install SIDE BY SIDE with the real Hearthwork —
  *   different install dir, different %APPDATA% workspace. Your real install and data
- *   are untouched. Uninstall "StarNet Canary" from Windows when done.
+ *   are untouched. Uninstall "Hearthwork Canary" from Windows when done.
  *
  * USAGE (Windows, in order):
  *   node scripts/update-canary.mjs build-old    # OLD installer @ current version, endpoint = localhost
  *   node scripts/update-canary.mjs build-new    # NEW installer @ patch-bumped version + signed feed
  *   node scripts/update-canary.mjs serve        # serve the feed on 127.0.0.1:8799 (leave running)
- *   → run .canary/old/*.exe to install, open StarNet Canary, SYSTEM → UPDATE CENTER →
+ *   → run .canary/old/*.exe to install, open Hearthwork Canary, SYSTEM → UPDATE CENTER →
  *     CHECK NOW → INSTALL UPDATE. Watch the serve log take the hits; the app restarts
  *     as the bumped version (title/Update Center show it).
  *   node scripts/update-canary.mjs status       # what's staged + the next step
@@ -96,7 +96,7 @@ function signingEnv() {
 // (side-by-side install) and a localhost updater endpoint.
 function overlayFor(version) {
   return {
-    productName: 'StarNet Canary',
+    productName: 'Hearthwork Canary',
     identifier: 'app.hearthwork.desktop.canary',
     version,
     plugins: {
@@ -119,15 +119,15 @@ function buildCanary(version, destDir) {
   execFileSync(process.execPath, [join(ROOT, 'scripts', 'prepare-node.mjs'), 'win-x64'], { cwd: ROOT, stdio: 'inherit' });
   execFileSync(process.execPath, [join(ROOT, 'scripts', 'stage-voice-deps.mjs'), '--target', 'win-x64'], { cwd: ROOT, stdio: 'inherit' });
 
-  log('building StarNet Canary v' + version + ' (full Rust release build — 10-30 min; a rustc ctor-race crash = just re-run)…');
+  log('building Hearthwork Canary v' + version + ' (full Rust release build — 10-30 min; a rustc ctor-race crash = just re-run)…');
   const r = spawnSync('npm', ['run', 'tauri', '--', 'build', '--bundles', 'nsis', '--config', overlayPath],
     { cwd: ROOT, stdio: 'inherit', env: signingEnv(), shell: true });
   if (r.status !== 0) fail('tauri build failed (exit ' + r.status + '). If rustc crashed (ctor race), re-run this exact command — the cache resumes.');
 
   // Locate the produced canary installer (+ .sig) and stage it.
   const nsisDir = join(ROOT, 'src-tauri', 'target', 'release', 'bundle', 'nsis');
-  const made = readdirSync(nsisDir).filter(f => f.startsWith('StarNet Canary_' + version + '_') && f.endsWith('-setup.exe'));
-  if (made.length !== 1) fail('expected exactly one StarNet Canary_' + version + '_*-setup.exe in ' + nsisDir + ', found ' + made.length);
+  const made = readdirSync(nsisDir).filter(f => f.startsWith('Hearthwork Canary_' + version + '_') && f.endsWith('-setup.exe'));
+  if (made.length !== 1) fail('expected exactly one Hearthwork Canary_' + version + '_*-setup.exe in ' + nsisDir + ', found ' + made.length);
   const exe = made[0];
   copyFileSync(join(nsisDir, exe), join(destDir, exe));
   if (existsSync(join(nsisDir, exe + '.sig'))) copyFileSync(join(nsisDir, exe + '.sig'), join(destDir, exe + '.sig'));
@@ -170,7 +170,7 @@ function serve() {
   });
   server.listen(PORT, '127.0.0.1', () => {
     log('canary feed serving on http://127.0.0.1:' + PORT + '/latest.json — leave this running.');
-    log('Now: install ' + OLD + '\\*.exe, open StarNet Canary, SYSTEM → UPDATE CENTER → CHECK NOW → INSTALL.');
+    log('Now: install ' + OLD + '\\*.exe, open Hearthwork Canary, SYSTEM → UPDATE CENTER → CHECK NOW → INSTALL.');
     log('Every request the installed app makes is logged below — that log IS the canary evidence.');
   });
 }
@@ -187,7 +187,7 @@ function status() {
 }
 
 const CDP_PORT = +argVal('--cdp-port', '9333');
-const INSTALL_DIR = join(process.env.LOCALAPPDATA || join(homedir(), 'AppData', 'Local'), 'StarNet Canary');
+const INSTALL_DIR = join(process.env.LOCALAPPDATA || join(homedir(), 'AppData', 'Local'), 'Hearthwork Canary');
 // NSIS keeps the crate's mainBinaryName — the productName only names the install dir/shortcuts.
 const INSTALLED_EXE = join(INSTALL_DIR, 'skynet-desktop.exe');
 
@@ -220,7 +220,7 @@ function installOld() {
   if (r.status !== 0) fail('installer exited ' + r.status);
   const v = installedVersion();
   if (!v) fail('install finished but ' + INSTALLED_EXE + ' is missing');
-  log('installed StarNet Canary v' + v + ' at ' + INSTALL_DIR);
+  log('installed Hearthwork Canary v' + v + ' at ' + INSTALL_DIR);
   launchWithCdp();
   log('next: keep serve running, then `node scripts/update-canary.mjs drive`');
 }
@@ -384,7 +384,7 @@ async function drive() {
   log(' populated state      : byte-stable semantic fingerprint ' + receipt.state.afterFingerprint);
   log(' exact receipt        : ' + RECEIPT_FILE);
   log('================================================');
-  log('CLEAN UPDATE PROVEN end-to-end. Uninstall "StarNet Canary" from Windows when done.');
+  log('CLEAN UPDATE PROVEN end-to-end. Uninstall "Hearthwork Canary" from Windows when done.');
   process.exit(0);
 }
 
@@ -403,7 +403,7 @@ function appRunning() {
 }
 function hangDiagnostic() {
   const r = spawnSync('powershell', ['-NoProfile', '-Command',
-    "$n=(Get-Process node -ErrorAction SilentlyContinue | Where-Object Path -like '*StarNet Canary*' | Measure-Object).Count; \"orphan sidecar node.exe still alive: $n\""],
+    "$n=(Get-Process node -ErrorAction SilentlyContinue | Where-Object Path -like '*Hearthwork Canary*' | Measure-Object).Count; \"orphan sidecar node.exe still alive: $n\""],
     { encoding: 'utf8' });
   return (r.stdout || '').trim() || 'unavailable';
 }

@@ -72,7 +72,7 @@ const HELD_BACK = new Set([
 const HELD_BACK_PREFIXES = ['app/assets/sprites/_assembly/'];
 
 /* Holding pricing back is not only about the pricing page: terms.html clause 2 and privacy.html
-   both describe the paid StarNet Credits program, and the terms cite the pricing page as forming
+   both describe the paid Hearthwork Credits program, and the terms cite the pricing page as forming
    part of them. Publishing that while the page itself is hidden would announce a paid tier nobody
    can read the price of, via a citation that resolves to the homepage.
    So the staged copies swap in variants carrying the wording ALREADY PUBLISHED on starnetos.com —

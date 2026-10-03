@@ -207,7 +207,7 @@ async function main() {
       'Do not use web_search or web_fetch as a substitute for browser.navigate and browser.get_text.',
       'The Markdown file must include these exact lines:',
       '# Phase 5 the reference harness Workload',
-      'verdict: live StarNet workload proof',
+      'verdict: live Hearthwork workload proof',
       'browser: example.com text captured',
       'input: synthetic-only (physical driver disabled)',
       'shell: live command attempted',

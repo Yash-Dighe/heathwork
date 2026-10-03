@@ -111,7 +111,7 @@ export function buildMirrorPlan(rawRelease, options = {}) {
     '|---|---|',
     ...installers.map(asset => `| **${platformLabel(asset.name)}** | [${asset.name}](${asset.downloadUrl}) |`),
     '',
-    'These downloads are mirrored byte-for-byte from the validated StarNet distribution release. Already running StarNet? Update from inside the app; your crew, sessions, keys, and station remain in place.',
+    'These downloads are mirrored byte-for-byte from the validated Hearthwork distribution release. Already running Hearthwork? Update from inside the app; your crew, sessions, keys, and station remain in place.',
     '',
     '---',
     '',
@@ -121,7 +121,7 @@ export function buildMirrorPlan(rawRelease, options = {}) {
 
   return {
     tag: release.tag,
-    title: `StarNet ${release.tag}`,
+    title: `Hearthwork ${release.tag}`,
     body: lines.join('\n'),
     distributionRepo,
     assets: installers.map(({ name, size, digest, downloadUrl }) => ({ name, size, digest: digest.toLowerCase(), downloadUrl }))

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// uiplay.mjs — INTERACTIVE playthrough auditor for StarNet.
+// uiplay.mjs — INTERACTIVE playthrough auditor for Hearthwork.
 //
 // Static screenshots (uishoot.mjs) catch how the UI LOOKS at rest. This catches what
 // breaks while you actually PLAY: send a chat directive, watch the live run, and detect

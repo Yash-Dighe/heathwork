@@ -55,8 +55,8 @@ const picker = Function('document', 'StationUI', 'SFX',
 )(document, StationUI, SFX);
 
 picker.buildPhosphor();
-A.eq(wrap.children.length, 6, 'all six phosphor choices render');
-A.eq(wrap.children.map(b => b.getAttribute('aria-pressed')), ['true', 'false', 'false', 'false', 'false', 'false'],
+A.eq(wrap.children.length, 7, 'all seven phosphor choices render (hearth + the six upstream presets)');
+A.eq(wrap.children.map(b => b.getAttribute('aria-pressed')), ['false', 'true', 'false', 'false', 'false', 'false', 'false'],
   'the saved amber tint initializes as the one accessible selection');
 A.eq(wrap.children.filter(b => b.className.split(/\s+/).includes('sel')).length, 1,
   'the visual picker also initializes with one selection');
@@ -67,7 +67,7 @@ green.onclick();
 A.eq(savedTheme, 'green', 'selection still persists through StationUI');
 A.ok(body.className.includes('theme-green'), 'selection still recolors the live screen');
 A.eq(clicks, 1, 'selection still emits one station click');
-A.eq(wrap.children.map(b => b.getAttribute('aria-pressed')), ['false', 'true', 'false', 'false', 'false', 'false'],
+A.eq(wrap.children.map(b => b.getAttribute('aria-pressed')), ['false', 'false', 'true', 'false', 'false', 'false', 'false'],
   'accessible selection moves to green with the visual selection');
 A.eq(wrap.children.filter(b => b.className.split(/\s+/).includes('sel')).map(b => b.dataset.t), ['green'],
   'exactly the same green choice remains visually selected');

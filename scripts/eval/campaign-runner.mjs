@@ -40,7 +40,7 @@ const fixtureServer = await startFixtureMcpServer();
 let driver = null, exitCode = 0;
 async function openDriver() {
   if (opts.harness === 'starnet') {
-    for (const name of ['runtime-root', 'workspaces']) if (!opts[name]) throw new Error(`StarNet requires --${name}`);
+    for (const name of ['runtime-root', 'workspaces']) if (!opts[name]) throw new Error(`Hearthwork requires --${name}`);
     return startStarNetDriver({ root: opts['runtime-root'], workspaces: opts.workspaces, fixtureUrl: fixtureServer.url, outputDir, port: opts.port, timeoutMs });
   }
   for (const name of ['source', 'python', 'home']) if (!opts[name]) throw new Error(`Hermes requires --${name}`);

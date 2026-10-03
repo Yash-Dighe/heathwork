@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// dogfood.mjs - StarNet daily-driver evidence runner.
+// dogfood.mjs - Hearthwork daily-driver evidence runner.
 //
 // This runner does not claim that headless tests equal a human UI dogfood pass.
 // It gathers the cheap, repeatable proof for the Phase 3.1 pack and marks the
@@ -114,7 +114,7 @@ function writeSummary(results) {
   };
   writeFileSync(join(OUT, 'dogfood-status.json'), JSON.stringify(json, null, 2));
 
-  let md = '# StarNet Dogfood Evidence\n\n';
+  let md = '# Hearthwork Dogfood Evidence\n\n';
   md += '- Generated: `' + json.generatedAt + '`\n';
   md += '- Verdict: `' + json.verdict + '`\n';
   md += '- Live key present: `' + json.liveKeyPresent + '`\n\n';

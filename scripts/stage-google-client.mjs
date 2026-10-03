@@ -19,7 +19,7 @@ try {
     if (fs.existsSync(target)) fs.unlinkSync(target);
     console.log('Google sign-in unavailable in this internal build; no publisher registration supplied.');
   } else {
-    if (!raw) throw new Error('STARNET_GOOGLE_DESKTOP_CLIENT_JSON must contain StarNet’s Google Desktop app registration');
+    if (!raw) throw new Error('STARNET_GOOGLE_DESKTOP_CLIENT_JSON must contain Hearthwork’s Google Desktop app registration');
     let parsed;
     try { parsed = JSON.parse(raw); } catch (_) { throw new Error('Google Desktop registration must be valid JSON'); }
     const client = desktopClient(parsed);
@@ -33,7 +33,7 @@ try {
     fs.writeFileSync(target, output + '\n', { mode: 0o644 });
     fs.chmodSync(target, 0o644);
     if (fs.readFileSync(target, 'utf8').trim() !== output) throw new Error('Google registration staging read-back failed');
-    console.log('StarNet Google Desktop registration staged and verified.' + (earlyAccess ? ' EARLY ACCESS: every Google service opens before verification.' : ''));
+    console.log('Hearthwork Google Desktop registration staged and verified.' + (earlyAccess ? ' EARLY ACCESS: every Google service opens before verification.' : ''));
   }
 } catch (e) {
   console.error('Google sign-in release configuration failed: ' + e.message);

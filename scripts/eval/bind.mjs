@@ -61,7 +61,7 @@ export function probeStarNetRuntimeNode(runtimeRoot, runtimeNode = '') {
   const run = spawnSync(executablePath, ['--version'], { encoding: 'utf8', timeout: 30000, windowsHide: true });
   const output = (String(run.stdout || '') + String(run.stderr || '')).trim();
   if (run.status !== 0 || !/^v\d+\.\d+\.\d+(?:[-+].*)?$/.test(output)) {
-    throw new Error(`installed StarNet runtime Node probe failed (${executablePath}): ${output || run.error?.message || `exit ${run.status}`}`);
+    throw new Error(`installed Hearthwork runtime Node probe failed (${executablePath}): ${output || run.error?.message || `exit ${run.status}`}`);
   }
   return { path: executablePath, version: output };
 }
@@ -83,7 +83,7 @@ export async function bindStarNet(opts) {
   const runtimeNode = probeStarNetRuntimeNode(opts.runtimeRoot, opts.runtimeNode);
   const probe = await healthProbe(opts.healthUrl, describe);
   return { schemaVersion: 'starnet.eval.candidate-manifest.v1', subject: {
-    name: 'StarNet', version: opts.version, commit: source.commit,
+    name: 'Hearthwork', version: opts.version, commit: source.commit,
     sourceTree: { algorithm: 'git-tree', value: source.tree }, executable: executable(opts.executable),
     platform: { platform: process.platform, arch: process.arch, node: runtimeNode.version }, dirty: false,
     provenance: { verified: true, kind: 'embedded-build-and-runtime-tree', describe, runtime, runtimeNode, probe,

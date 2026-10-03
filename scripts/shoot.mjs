@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// shoot.mjs — THE one-command in-game UI screenshotter for StarNet.  (`npm run shoot`)
+// shoot.mjs — THE one-command in-game UI screenshotter for Hearthwork.  (`npm run shoot`)
 //
 // What it guarantees (P0 definition-of-done):
 //   1. Boots a SEEDED, pre-onboarded sidecar (lands on the live floor, not the title screen),

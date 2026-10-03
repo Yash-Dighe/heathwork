@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /*
- * release-bump.mjs — one-command version bumper for a StarNet desktop release cut.
+ * release-bump.mjs — one-command version bumper for a Hearthwork desktop release cut.
  *
  * Bumps the version in lockstep across every file the release train reads, scaffolds
  * fresh release notes, then commits + tags so a `v<version>` tag push can trigger the
@@ -233,7 +233,7 @@ function planCargoLock(version) {
 function planReleaseNotes(version) {
   const path = join(ROOT, 'RELEASE_NOTES.md');
   const before = existsSync(path) ? readText(path) : '';
-  const after = '# StarNet v' + version + '\n\n- TODO: summarize what changed in this release.\n';
+  const after = '# Hearthwork v' + version + '\n\n- TODO: summarize what changed in this release.\n';
   return { path, before, after, current: null, label: 'RELEASE_NOTES.md (scaffold)' };
 }
 

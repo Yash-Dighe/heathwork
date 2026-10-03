@@ -298,7 +298,7 @@ function writeSummary(allResults, loopsRun, stableIterations) {
   };
   writeJson(join(OUT, 't3-release-smoke-status.json'), status);
 
-  let md = '# StarNet T3 Release Smoke Evidence\n\n';
+  let md = '# Hearthwork T3 Release Smoke Evidence\n\n';
   md += '- Generated: `' + status.generatedAt + '`\n';
   md += '- Verdict: `' + status.verdict + '`\n';
   md += '- Release smoke ready: `' + status.releaseSmokeReady + '`\n';

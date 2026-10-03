@@ -57,7 +57,7 @@ const mark = rects(c => c === '#');
 const flame = rects(c => c === 'F'), core = rects(c => c === 'y');
 
 const mask = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${Math.ceil(H)}"><title>${text}</title>` +
-  `<path fill="#000" d="${mark}${flame}${core}${shifted}"/></svg>\n`;
+  `<path fill="currentColor" d="${mark}${flame}${core}${shifted}"/></svg>\n`;
 const logo = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${Math.ceil(H)}"><title>${text}</title>` +
   `<path fill="#e9b872" d="${mark}"/><path fill="#f0743e" d="${flame}"/><path fill="#ffd970" d="${core}"/>` +
   `<path fill="#fbe6c2" d="${shifted}"/></svg>\n`;
@@ -65,4 +65,9 @@ const out = path.join(ROOT, 'frontend', 'assets', 'brand');
 fs.mkdirSync(out, { recursive: true });
 fs.writeFileSync(path.join(out, 'wordmark.svg'), mask);
 fs.writeFileSync(path.join(out, 'logo.svg'), logo);
+// keep the masked header mark's aspect-ratio in step with the new viewBox (a masked <span> has no intrinsic size)
+const cssPath = path.join(ROOT, 'frontend', 'css', 'style.css');
+const css = fs.readFileSync(cssPath, 'utf8');
+const css2 = css.replace(/(\.logo-img\s*\{[^}]*?aspect-ratio:\s*)[\d.]+\s*\/\s*[\d.]+/, `$1${W} / ${Math.ceil(H)}`);
+if (css2 !== css) fs.writeFileSync(cssPath, css2);
 console.log(`make-wordmark: ${text} -> frontend/assets/brand/{wordmark,logo}.svg (${W}x${Math.ceil(H)})`);

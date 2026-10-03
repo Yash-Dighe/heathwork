@@ -90,7 +90,7 @@ function writeSummary(results, loopsRun) {
   };
   writeFileSync(join(OUT, 'phase3-seal-status.json'), JSON.stringify(json, null, 2));
 
-  let md = '# StarNet Phase 3 Seal Evidence\n\n';
+  let md = '# Hearthwork Phase 3 Seal Evidence\n\n';
   md += '- Generated: `' + json.generatedAt + '`\n';
   md += '- Verdict: `' + verdict + '`\n';
   md += '- Loops run: `' + loopsRun + '`\n\n';

@@ -166,7 +166,7 @@ function validateEvidence(parsed, installerInfo) {
     ['launch.resourceDir', doc.launch && doc.launch.resourceDir]
   ].map(([label, value]) => [label, evidenceString(value)]).filter(([, value]) => value);
   const smokePath = hygienePaths.find(([, value]) => hasSmokeInstallMarker(value));
-  if (smokePath) errors.push('Evidence points at a StarNet smoke-test install path: ' + smokePath[0] + '.');
+  if (smokePath) errors.push('Evidence points at a Hearthwork smoke-test install path: ' + smokePath[0] + '.');
   if (installLocation && workspaceRoot && isSubPath(workspaceRoot, installLocation)) errors.push('Evidence launch.workspaceRoot must not live under the installation directory.');
   if (workspaceRoot && !isWindowsAppDataPath(workspaceRoot)) errors.push('Evidence launch.workspaceRoot must live under Windows AppData.');
   const proof = {
@@ -278,7 +278,7 @@ function writeSummary(allResults, loopsRun) {
   };
   writeJson(join(OUT, 't0-clean-install-status.json'), json);
 
-  let md = '# StarNet T0 Clean-Machine Install Evidence\n\n';
+  let md = '# Hearthwork T0 Clean-Machine Install Evidence\n\n';
   md += '- Generated: `' + json.generatedAt + '`\n';
   md += '- Verdict: `' + json.verdict + '`\n';
   md += '- Clean install proof ready: `' + json.cleanInstallProofReady + '`\n\n';

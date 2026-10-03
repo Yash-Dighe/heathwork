@@ -12,7 +12,7 @@
 # always created as a DRAFT (--draft) — a draft does not move releases/latest, so a human must
 # still click Publish in the GitHub UI. That human step is the real 4-platform checkpoint.
 #
-# StarNet release build — machine-independent signed cut.
+# Hearthwork release build — machine-independent signed cut.
 #
 # Why this exists: local release builds depend on the dev machine's Smart App Control
 # state (SAC enforce blocks freshly compiled proc-macro DLLs — see docs/LAUNCH_CHECKLIST.md).
@@ -110,7 +110,7 @@ jobs:
           $v = "${{ steps.ver.outputs.version }}"
           gh release create "v$v" `
             --repo androoAGI/starnet-releases `
-            --title "StarNet $v" `
+            --title "Hearthwork $v" `
             --notes-file RELEASE_NOTES.md `
             --draft `
             "release/StarNet_${v}_x64-setup.exe" `

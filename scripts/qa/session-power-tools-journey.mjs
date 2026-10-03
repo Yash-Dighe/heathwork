@@ -1,6 +1,6 @@
 // Live DOM journey for the surviving session power tools (the SESSION TOOLS window was retired
 // 2026-07-17): rail search over 50 sessions, hit-click session switch, and per-row ⋯ menu export
-// in both formats. Start a seeded StarNet app, then point SKYNET_PORT here.
+// in both formats. Start a seeded Hearthwork app, then point SKYNET_PORT here.
 import { launchChrome, connectCDP, evalJS, collectDiagnostics, sleep } from '../lib/cdp.mjs';
 import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';

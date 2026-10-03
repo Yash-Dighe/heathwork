@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// phase4.mjs - StarNet the reference harness cutover qualification loop.
+// phase4.mjs - Hearthwork the reference harness cutover qualification loop.
 
 import { copyFileSync, existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
@@ -119,7 +119,7 @@ function checkSameWorkTrial(loop) {
     return {
       id: '4.2-starnet-same-work-trial',
       phase: '4.2',
-      title: 'StarNet same-work trial through gamified UI',
+      title: 'Hearthwork same-work trial through gamified UI',
       loop,
       status: 'fail',
       required: true,
@@ -140,7 +140,7 @@ function checkSameWorkTrial(loop) {
   return {
     id: '4.2-starnet-same-work-trial',
     phase: '4.2',
-    title: 'StarNet same-work trial through gamified UI',
+    title: 'Hearthwork same-work trial through gamified UI',
     loop,
     status: enoughEvidence ? 'pass' : 'blocked',
     required: true,
@@ -360,7 +360,7 @@ function writeSummary(allResults, loopsRun) {
   };
   writeFileSync(join(OUT, 'phase4-status.json'), JSON.stringify(json, null, 2));
 
-  let md = '# StarNet Phase 4 Cutover Evidence\n\n';
+  let md = '# Hearthwork Phase 4 Cutover Evidence\n\n';
   md += '- Generated: `' + json.generatedAt + '`\n';
   md += '- Verdict: `' + verdict + '`\n';
   md += '- Loops run: `' + loopsRun + '`\n';
@@ -375,7 +375,7 @@ function writeSummary(allResults, loopsRun) {
   md += 'Run `npm.cmd run phase4:loop` after each fix or evidence update. The loop stops when it is green, red, or stably blocked on external live/attended/decision evidence.\n\n';
   md += '## Next Action\n\n';
   const next = latest.find(r => r.status === 'fail' || r.status === 'blocked');
-  if (!next) md += 'P4 is green. StarNet has replacement qualification evidence and a recorded decision.\n';
+  if (!next) md += 'P4 is green. Hearthwork has replacement qualification evidence and a recorded decision.\n';
   else md += 'Work the first non-pass item: `' + next.id + '` - ' + (next.reason || next.title) + '\n';
   writeFileSync(join(OUT, 'summary.md'), md);
   copyLatest();

@@ -13,7 +13,7 @@ import { fileURLToPath } from 'node:url';
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 
 // Fork: steps whose test file is listed in test/fork-skip.list (upstream website / release-train tests that
-// check StarNet's own marketing site and release infrastructure) are skipped, loudly, not silently.
+// check Hearthwork's own marketing site and release infrastructure) are skipped, loudly, not silently.
 function forkSkips() {
   const f = join(ROOT, 'test', 'fork-skip.list');
   if (!existsSync(f)) return new Set();
@@ -49,7 +49,7 @@ export function runList(options) {
     const step = steps[index];
     // HERMETIC PROFILE (2026-08-20): the sidecar's boot-time station auto-recovery scans the real
     // per-user app-data roots for a lost station, and a test's fresh temp workspace looks exactly
-    // like one — so on a machine with an installed StarNet station, test-booted sidecars ingested
+    // like one — so on a machine with an installed Hearthwork station, test-booted sidecars ingested
     // the user's REAL station into their temp workspaces (schema-stamp and sidecar.http broke the
     // day the desktop app was first installed on the dev box). Every step gets its own empty
     // scratch profile so no spawned sidecar can see, or touch, real user data — and no step can

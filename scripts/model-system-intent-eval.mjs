@@ -1,7 +1,7 @@
 #!/usr/bin/env node
-/* Fixed, real-provider intent evaluation for StarNet's model-facing system controls.
+/* Fixed, real-provider intent evaluation for Hearthwork's model-facing system controls.
 
-   This never executes a tool and never touches a StarNet workspace. It sends the ACTUAL shipped tool names,
+   This never executes a tool and never touches a Hearthwork workspace. It sends the ACTUAL shipped tool names,
    descriptions, and schemas to one pinned model, then requires the first streamed call to select the expected
    durable system. Functional/restart/UI mutation proof lives in the ordinary isolated test + live-app suites. */
 import { createRequire } from 'node:module';
@@ -52,7 +52,7 @@ async function choose(text) {
       signal: controller.signal,
       tools,
       messages: [
-        { role: 'system', content: 'You operate StarNet. The requested target does not already exist. Choose exactly one appropriate mutation tool now. Do not answer in prose and do not list first.' },
+        { role: 'system', content: 'You operate Hearthwork. The requested target does not already exist. Choose exactly one appropriate mutation tool now. Do not answer in prose and do not list first.' },
         { role: 'user', content: text }
       ]
     })) {

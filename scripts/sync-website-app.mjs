@@ -82,7 +82,7 @@ function embedIndexHtml(src) {
   let out = src;
 
   // 1. Fonts. This used to STRIP a Google Fonts link the app carried and the public site could
-  //    not (zero third-party requests). As of the STARNET font law the app has no remote font
+  //    not (zero third-party requests). As of the HEARTHWORK font law the app has no remote font
   //    either — VT323 has exactly one source, the local woff2 — so there is nothing left to
   //    strip and this is now a pure assertion. Kept as a hard check rather than deleted: the
   //    website is generated, so this is the last gate before a re-introduced CDN font would be

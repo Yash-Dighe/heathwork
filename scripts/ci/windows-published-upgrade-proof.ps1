@@ -11,8 +11,8 @@ Set-StrictMode -Version Latest
 $releaseRepo = 'androoAGI/starnet-releases'
 $tempRoot = [IO.Path]::GetFullPath($env:RUNNER_TEMP).TrimEnd('\')
 $proofRoot = [IO.Path]::GetFullPath((Join-Path $tempRoot 'starnet-published-upgrade-proof'))
-$uninstallKey = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\StarNet'
-$productKey = 'HKCU:\Software\Andrew Sims\StarNet'
+$uninstallKey = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Uninstall\Hearthwork'
+$productKey = 'HKCU:\Software\Andrew Sims\Hearthwork'
 $candidate = [IO.Path]::GetFullPath($CandidateInstaller)
 $targetVersion = [version]$CandidateVersion
 $appDataWorkspaces = [IO.Path]::GetFullPath((Join-Path $env:APPDATA 'app.hearthwork.desktop\workspaces'))
@@ -57,7 +57,7 @@ function Remove-ProofState {
   $resolved = [IO.Path]::GetFullPath($Path)
   $prefix = $appDataWorkspaces.TrimEnd('\') + '\.upgrade-proof-'
   if (-not $resolved.StartsWith($prefix, [StringComparison]::OrdinalIgnoreCase)) {
-    throw "refusing to remove non-proof StarNet state: $resolved"
+    throw "refusing to remove non-proof Hearthwork state: $resolved"
   }
   if (Test-Path -LiteralPath $resolved) {
     Remove-Item -LiteralPath $resolved -Recurse -Force
@@ -83,7 +83,7 @@ function Stop-ExactProcesses {
     Start-Sleep -Milliseconds 250
   }
   if (@(Get-ExactProcesses $Paths).Count -gt 0) {
-    throw "owned StarNet process did not stop: $($Paths -join ', ')"
+    throw "owned Hearthwork process did not stop: $($Paths -join ', ')"
   }
 }
 
@@ -114,7 +114,7 @@ function Wait-ForExactProcessesStopped {
   }
   if ($remaining.Count -gt 0) {
     $details = ($remaining | ForEach-Object { "$($_.Id):$($_.Path)" }) -join ', '
-    throw "$Label left an owned StarNet process alive after ${Seconds}s: $details"
+    throw "$Label left an owned Hearthwork process alive after ${Seconds}s: $details"
   }
 }
 
@@ -142,11 +142,11 @@ function Reset-ProofInstall {
   if ($null -ne $registered) {
     $location = [string]$registered.InstallLocation
     if (-not $location) {
-      throw 'refusing to remove a StarNet registry record without a verifiable InstallLocation'
+      throw 'refusing to remove a Hearthwork registry record without a verifiable InstallLocation'
     }
     $resolvedLocation = [IO.Path]::GetFullPath($location.Trim('"'))
     if (-not $resolvedLocation.StartsWith($tempRoot + '\', [StringComparison]::OrdinalIgnoreCase)) {
-      throw "refusing to remove a non-proof StarNet registry record: $resolvedLocation"
+      throw "refusing to remove a non-proof Hearthwork registry record: $resolvedLocation"
     }
     Remove-Item -LiteralPath $uninstallKey -Recurse -Force
   }
@@ -241,7 +241,7 @@ try {
     Wait-ForExactProcess -Path $app
     Wait-ForExactProcess -Path $node
 
-    # Reproduce the field failure exactly: the registry says StarNet is installed, but the old
+    # Reproduce the field failure exactly: the registry says Hearthwork is installed, but the old
     # uninstaller cannot be invoked. The candidate must never depend on that file for an upgrade.
     Remove-Item -LiteralPath $oldUninstaller -Force
     $upgrade = Start-Process -FilePath $candidate -PassThru

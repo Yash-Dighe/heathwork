@@ -555,7 +555,7 @@ export function buildReceipt(input) {
 
 export function renderSummary(r) {
   const L = [];
-  L.push(`# StarNet soak — ${r.verdict}`);
+  L.push(`# Hearthwork soak — ${r.verdict}`);
   L.push('');
   L.push(`- schema: ${r.schema}`);
   L.push(`- sidecar head: ${r.sidecarHead || 'unknown'}`);

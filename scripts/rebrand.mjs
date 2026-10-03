@@ -17,9 +17,12 @@ import { fileURLToPath } from 'node:url';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const brand = JSON.parse(fs.readFileSync(path.join(ROOT, 'brand.json'), 'utf8'));
 const APPLIED = path.join(ROOT, '.brand-applied.json');
-const prev = fs.existsSync(APPLIED)
+// --from=OldName,OLDNAME re-applies a rename from an explicit previous name; --only=dir1,dir2 limits the scope.
+const argv = Object.fromEntries(process.argv.slice(2).filter(a => a.startsWith('--')).map(a => { const [k, v] = a.slice(2).split('='); return [k, v || '']; }));
+const prevOverride = argv.from ? { name: argv.from.split(',')[0], nameUpper: argv.from.split(',')[1] || argv.from.split(',')[0].toUpperCase(), identifier: 'ai.skynet.harness', aliases: [] } : null;
+const prev = prevOverride || (fs.existsSync(APPLIED)
   ? JSON.parse(fs.readFileSync(APPLIED, 'utf8'))
-  : { name: 'StarNet', nameUpper: 'STARNET', identifier: 'ai.skynet.harness', aliases: ['Starnet'] };
+  : { name: 'StarNet', nameUpper: 'STARNET', identifier: 'ai.skynet.harness', aliases: ['Starnet'] });
 
 const SCOPES = ['frontend', 'sidecar', 'shared', 'test', 'src-tauri/src', 'scripts', '.github/workflows'];
 // Legal/project docs (README, PRIVACY, TERMS, SECURITY, INSTALL) are yours to write, not to find-and-replace.
@@ -52,13 +55,27 @@ function* walk(dir) {
 }
 
 let changed = 0;
-const files = [...SCOPES.flatMap(s => [...walk(path.join(ROOT, s))]), ...TOP_FILES.map(f => path.join(ROOT, f))];
+const scopes = argv.only ? argv.only.split(',') : SCOPES;
+const files = [...scopes.flatMap(s => [...walk(path.join(ROOT, s))]), ...(argv.only ? [] : TOP_FILES.map(f => path.join(ROOT, f)))];
 for (const f of files) {
   if (!fs.existsSync(f) || f.endsWith('rebrand.mjs') || f.endsWith('brand.json') || f.endsWith(path.join('app', 'brand.js'))) continue;
   const before = fs.readFileSync(f, 'utf8');
   let after = before;
   for (const [re, to] of rules) after = after.replace(re, to);
   if (after !== before) { fs.writeFileSync(f, after); changed++; }
+}
+
+// Releases live on the brand's GitHub repo: derive the human page + the updater manifest URL from it.
+if (brand.github) {
+  brand.urls.releasesPage = brand.urls.releasesPage || `https://github.com/${brand.github}/releases/latest`;
+  brand.urls.updaterEndpoint = brand.urls.updaterEndpoint || `https://github.com/${brand.github}/releases/latest/download/latest.json`;
+}
+if (!brand.updaterPubkey) brand.urls.updaterEndpoint = '';   // no signing key yet = updater off (Tauri refuses unsigned updates)
+{
+  const up = path.join(ROOT, 'frontend', 'app', 'updates.js');
+  const src = fs.readFileSync(up, 'utf8');
+  const out = src.replace(/const RELEASES_PAGE = '[^']*'; \/\/ @rebrand:releases-page/, `const RELEASES_PAGE = '${brand.urls.releasesPage || ''}'; // @rebrand:releases-page`);
+  if (out !== src) fs.writeFileSync(up, out);
 }
 
 // Desktop identity + updater
@@ -70,7 +87,7 @@ if (conf.app && Array.isArray(conf.app.windows)) for (const w of conf.app.window
 const upd = conf.plugins && conf.plugins.updater;
 if (upd) {
   upd.endpoints = brand.urls.updaterEndpoint ? [brand.urls.updaterEndpoint] : ['https://updates.invalid/disabled/latest.json'];
-  if (!brand.urls.updaterEndpoint) upd.pubkey = 'REPLACE_WITH_YOUR_TAURI_UPDATER_PUBKEY';
+  upd.pubkey = brand.updaterPubkey || 'RUN_scripts/updater-keys.mjs_TO_SET_YOUR_PUBKEY';
 }
 fs.writeFileSync(confPath, JSON.stringify(conf, null, 2) + '\n');
 
@@ -85,7 +102,7 @@ fs.writeFileSync(path.join(ROOT, 'frontend', 'app', 'brand.js'), brandJs);
 // The sidecar reads shared/brand.json (shared/ ships inside the desktop bundle; the repo root does not).
 fs.writeFileSync(path.join(ROOT, 'shared', 'brand.json'), JSON.stringify(brand, null, 2) + '\n');
 
-fs.writeFileSync(APPLIED, JSON.stringify({ name: brand.name, nameUpper: brand.nameUpper, identifier: brand.identifier }, null, 2) + '\n');
+if (!argv.only) fs.writeFileSync(APPLIED, JSON.stringify({ name: brand.name, nameUpper: brand.nameUpper, identifier: brand.identifier }, null, 2) + '\n');
 // regenerate the wordmark/logo for the (possibly new) name
 await import('./make-wordmark.mjs');
 console.log(`rebrand: ${prev.name} -> ${brand.name}; ${changed} files rewritten; tauri identity + frontend/app/brand.js updated`);

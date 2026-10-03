@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// audit.mjs — assertion-driven behavioral + truthfulness auditor for StarNet.  (`npm run audit`)
+// audit.mjs — assertion-driven behavioral + truthfulness auditor for Hearthwork.  (`npm run audit`)
 //
 // Where `npm run shoot` proves the UI LOOKS right (frames a human/agent reads), this proves the
 // floor BEHAVES right and the numbers don't lie — fully automatically, PASS/FAIL, no eyeballing.

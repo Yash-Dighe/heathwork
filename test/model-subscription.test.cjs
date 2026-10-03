@@ -11,7 +11,8 @@ async function exercise(invoke) {
   const context = {
     closeDock: () => closed++,
     window: invoke ? { __TAURI__: { core: { invoke: (...args) => { calls.push(args); return invoke(); } } } } : {},
-    StationUI: { notify: (...args) => notices.push(args) }
+    StationUI: { notify: (...args) => notices.push(args) },
+    BRAND: { urls: { pricing: 'https://example.com/pricing' } }   // fork: the pricing page comes from brand.json
   };
   vm.runInNewContext(handler + '\nthis.openAccount = openSubscription;', context);
   context.openAccount({ preventDefault: () => prevented++ });
@@ -28,13 +29,14 @@ async function exercise(invoke) {
   assert.equal(desktop.prevented, 1, 'desktop suppresses the unsupported webview popup');
   assert.equal(desktop.calls.length, 1);
   assert.equal(desktop.calls[0][0], 'open_external_url');
-  assert.equal(desktop.calls[0][1].url, 'https://www.starnetos.com/pricing');
+  assert.equal(desktop.calls[0][1].url, 'https://example.com/pricing');
   assert.equal(desktop.notices.length, 0);
   const failure = await exercise(() => Promise.reject(new Error('browser unavailable')));
   assert.equal(failure.notices.length, 1, 'failed desktop launch is visible');
-  assert.match(failure.notices[0][0], /www\.starnetos\.com\/pricing/);
+  assert.match(failure.notices[0][0], /example\.com\/pricing/);
   assert.equal(failure.notices[0][1], 'warn');
   const html = fs.readFileSync(path.join(__dirname, '../frontend/index.html'), 'utf8');
-  assert.match(html, /id="model-dock-subscription" href="https:\/\/www\.starnetos\.com\/pricing" target="_blank" rel="noopener noreferrer"/);
+  // fork: the link ships hidden and is pointed at brand.json's pricing page at runtime (modeldock.js wire())
+  assert.match(html, /id="model-dock-subscription" hidden href="#" target="_blank" rel="noopener noreferrer"/);
   console.log('model-subscription: browser navigation, desktop bridge and failure feedback passed');
 })().catch(e => { console.error(e); process.exitCode = 1; });

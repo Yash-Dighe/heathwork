@@ -171,14 +171,14 @@ const status = {
   rpo: scenarios.find(x => x.id === 'dr.8-recovery-point')?.evidence || null,
   limitations: [
     'The rehearsal uses a disposable filesystem profile and synthetic credentials; installed Windows/macOS UI import remains a separate attended proof.',
-    'The RPO is measured for explicit quiescent recovery points. StarNet does not yet claim an automatic continuous-backup RPO.'
+    'The RPO is measured for explicit quiescent recovery points. Hearthwork does not yet claim an automatic continuous-backup RPO.'
   ]
 };
 
 ensure(out);
 fs.writeFileSync(path.join(out, 'disaster-recovery-status.json'), JSON.stringify(status, null, 2) + '\n');
 const md = [
-  '# StarNet Disaster-Recovery Rehearsal', '',
+  '# Hearthwork Disaster-Recovery Rehearsal', '',
   '- Verdict: **' + status.verdict.toUpperCase() + '**',
   '- Complete station restored: **' + String(status.completeStationRestored) + '**',
   '- Scenarios: **' + status.counts.pass + '/' + scenarios.length + ' pass**',

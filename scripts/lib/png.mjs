@@ -1,7 +1,7 @@
 // scripts/lib/png.mjs — minimal ZERO-DEP PNG decode (built-in zlib) + a downscaled grayscale
 // "signature" for animation-tolerant golden-frame change detection.
 //
-// WHY a signature, not a pixel diff: StarNet's floor animates every frame (the agent wanders, the
+// WHY a signature, not a pixel diff: Hearthwork's floor animates every frame (the agent wanders, the
 // reactor pulses), so two captures of the SAME state never match pixel-for-pixel. Heavily
 // downscaling to a small grayscale grid averages out that local jitter while preserving gross
 // structure (which panel is open, layout, large colour blocks) — so the mean-abs-diff between two

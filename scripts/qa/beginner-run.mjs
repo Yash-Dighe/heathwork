@@ -13,7 +13,7 @@
  * THE FRESH BOOT (the key difference from shootRun.mjs): we boot a sidecar WITHOUT SKYNET_DEV
  * and against a THROWAWAY EMPTY temp workspace. Re-derived from dev/seed.js + sidecar/index.js:
  *   - SKYNET_WORKSPACES=<temp dir>  → the sidecar persists into our scratch, NEVER the real
- *     %LOCALAPPDATA%\StarNet\workspaces. An EMPTY dir means no agent.save.json → app.js init()
+ *     %LOCALAPPDATA%\Hearthwork\workspaces. An EMPTY dir means no agent.save.json → app.js init()
  *     finds no save → startCreation() → the CREATE YOUR OVERSEER connect screen shows.
  *   - NO SKYNET_DEV: with DEV_MODE off the served index.html does NOT inject window.__STARNET_DEV__,
  *     so harness.js does not treat the origin as pre-configured and does NOT auto-resume. The

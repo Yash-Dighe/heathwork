@@ -1,4 +1,4 @@
-# StarNet agent-quality benchmark
+# Hearthwork agent-quality benchmark
 
 This is the dependency-free, task-outcome evaluation layer. It complements the existing wiring,
 UI, release, and workload gates; it does not replace them or make a release-readiness claim.
@@ -54,7 +54,7 @@ The frozen comparison contract is `contracts/v0.9.0.json`. It binds the comparis
 v0.19.1/tag `v2026.7.30`. The annotated tag object is
 `d25e2dbdbc40b49808c0a0e9cfed21cc90cffab3`; its peeled commit is
 `cc4cab2f592e60a197e796506de9168f74baf3ea`, with tree
-`fcdc6093750ed0a3a556e20927799d7245ba65e4`. The contract classifies every advertised StarNet
+`fcdc6093750ed0a3a556e20927799d7245ba65e4`. The contract classifies every advertised Hearthwork
 claim and freezes the release gates.
 Validate it against the live product-perfect claim ledger:
 
@@ -107,7 +107,7 @@ Provider evaluation homes may copy non-secret roster/state fixtures, but must ne
 auth, or `.env` files. Bindings prove the executable; they do not authorize credential use.
 
 Before the full campaign, probe both harnesses with one explicit comparison model. `--model` is applied
-to Hermes and to StarNet's default-model environment; the probe still fails if a persisted StarNet roster
+to Hermes and to Hearthwork's default-model environment; the probe still fails if a persisted Hearthwork roster
 selects a different model, so a nominal CLI flag cannot hide a real mismatch:
 
 ```powershell
@@ -123,7 +123,7 @@ node scripts/eval/same-model-receipt.mjs --probes <probe-1.json>,<probe-2.json>,
 node scripts/eval/runner.mjs verify-receipt --receipt <performance-receipt.json>
 ```
 
-This measures StarNet's bound installed runtime node/sidecar path, not desktop UI cold boot, and is
+This measures Hearthwork's bound installed runtime node/sidecar path, not desktop UI cold boot, and is
 only the provider/model equivalence preflight. It does not replace the 32-scenario gauntlet or the
 installed provider-backed 48-hour soak.
 

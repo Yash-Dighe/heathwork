@@ -18,7 +18,7 @@
  * GET /api/cron / Workstreams globals). It is the same class of coverage the project already accepts
  * as `perfected` evidence for the shared window-chrome entries (scripts/qa/terminal-resize-journey.mjs).
  *
- * LAWS (Charter Part 5 + StarNet task doctrine):
+ * LAWS (Charter Part 5 + Hearthwork task doctrine):
  *   - ZERO PAID CALLS: the only provider is a local quick-mock (streams a canned reply). A RECIPES
  *     RUN NOW dispatches a real kind:'task' workstream; its run completes against the mock.
  *   - NO-FAKE-GREEN: a setup that cannot run exits BLOCKED (2), never a silent pass.

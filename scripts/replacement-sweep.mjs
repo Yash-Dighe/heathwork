@@ -249,7 +249,7 @@ function processScanStep() {
     'process-scan',
     'No stale desktop smoke processes are visible',
     suspicious.length ? 'warn' : 'pass',
-    suspicious.length ? 'Desktop smoke processes are still visible; close them before packaging public evidence.' : 'No StarNet/QEMU/Tauri smoke process was visible.',
+    suspicious.length ? 'Desktop smoke processes are still visible; close them before packaging public evidence.' : 'No Hearthwork/QEMU/Tauri smoke process was visible.',
     { suspicious }
   );
 }
@@ -289,7 +289,7 @@ function writeSummary(results, proofs, installer) {
   };
   writeJson(join(OUT, 'replacement-sweep-status.json'), status);
 
-  let md = '# StarNet Replacement Sweep\n\n';
+  let md = '# Hearthwork Replacement Sweep\n\n';
   md += '- Generated: `' + status.generatedAt + '`\n';
   md += '- Scope: `' + status.scope + '`\n';
   md += '- Verdict: `' + status.verdict + '`\n';

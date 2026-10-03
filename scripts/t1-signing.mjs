@@ -280,7 +280,7 @@ function writeSummary(allResults, loopsRun) {
   };
   writeJson(join(OUT, 't1-signing-status.json'), json);
 
-  let md = '# StarNet T1 Signing Lead-Time Evidence\n\n';
+  let md = '# Hearthwork T1 Signing Lead-Time Evidence\n\n';
   md += '- Generated: `' + json.generatedAt + '`\n';
   md += '- Mode: `' + json.mode + '`\n';
   md += '- Verdict: `' + json.verdict + '`\n';

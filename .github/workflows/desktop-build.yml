@@ -12,7 +12,7 @@
 #   AZURE_TENANT_ID + AZURE_CLIENT_ID + AZURE_CLIENT_SECRET -> Authenticode-sign the
 #     Windows exe + NSIS installer via Azure Artifact Signing. The bundled Node runtime
 #     retains its valid upstream OpenJS signature. (Account starnet-signing / eastus;
-#     absent = unsigned StarNet exe/installer, still installable for internal testing.)
+#     absent = unsigned Hearthwork exe/installer, still installable for internal testing.)
 # With no Apple secrets the DMG is unsigned: fine for internal testing (System
 # Settings -> Privacy & Security -> Open Anyway), not for public distribution.
 # Operator setup for both signing tiers: docs/CODE_SIGNING.md.
@@ -108,7 +108,7 @@ jobs:
         shell: bash
         run: bash scripts/hydrate-sharp-macos-x64.sh
 
-      - name: Stage StarNet Google sign-in registration
+      - name: Stage Hearthwork Google sign-in registration
         env:
           STARNET_GOOGLE_DESKTOP_CLIENT_JSON: ${{ secrets.STARNET_GOOGLE_DESKTOP_CLIENT_JSON }}
           STARNET_GOOGLE_EARLY_ACCESS: ${{ inputs.google_early_access == 'true' && '1' || '' }}
@@ -347,7 +347,7 @@ jobs:
 
           ## macOS
           1. Download **`arm64`** for Apple Silicon (M1/M2/M3/M4) or **`x64`** for an Intel Mac.
-          2. Open it and drag **StarNet** onto the **Applications** folder.
+          2. Open it and drag **Hearthwork** onto the **Applications** folder.
           3. Launch it from Applications. The Developer ID signature and stapled Apple notarization ticket should open without the old unidentified/developer-risk wall.
 
           ## Windows
@@ -358,7 +358,7 @@ jobs:
           ASSETS=$(find dist -type f \( -name '*.dmg' -o -name '*-setup.exe' \))
           gh release create "$TAG" \
             --repo androoAGI/starnet-releases \
-            --title "StarNet ${VERSION} test build (r${{ github.run_number }})" \
+            --title "Hearthwork ${VERSION} test build (r${{ github.run_number }})" \
             --notes-file notes.md \
             --prerelease \
             $ASSETS

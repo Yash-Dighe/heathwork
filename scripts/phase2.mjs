@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// phase2.mjs - StarNet ref-replacement Phase 2 steering runner.
+// phase2.mjs - Hearthwork ref-replacement Phase 2 steering runner.
 //
 // This is not a new product test suite. It is the control loop that turns the Phase 2
 // replacement plan into evidence: run the gates that can run on this machine, mark
@@ -104,7 +104,7 @@ function writeSummary(results) {
   };
   writeFileSync(join(OUT, 'phase2-status.json'), JSON.stringify(json, null, 2));
 
-  let md = '# StarNet Phase 2 Evidence\n\n';
+  let md = '# Hearthwork Phase 2 Evidence\n\n';
   md += '- Generated: `' + json.generatedAt + '`\n';
   md += '- Verdict: `' + json.verdict + '`\n';
   md += '- Live key present: `' + json.liveKeyPresent + '`\n';

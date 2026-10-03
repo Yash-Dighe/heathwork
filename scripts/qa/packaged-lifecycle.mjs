@@ -11,7 +11,7 @@
  *
  * THE MATRIX (see CASES):
  *   idle-close     default prefs: WM_CLOSE → shell exe GONE, no orphan <install>\node.exe, relaunch
- *                  → visible "StarNet" window + /api/health up. Branch proof: startup.log says
+ *                  → visible "Hearthwork" window + /api/health up. Branch proof: startup.log says
  *                  `close-request: close_to_tray=false` and never `staying resident`.
  *   close-to-tray  lifecycle.json {closeToTray:true} (the shell's own versioned record, written
  *                  while the app is NOT running because it is read once at startup) → launch →
@@ -45,7 +45,7 @@ import { pathToFileURL } from 'node:url';
 export const RECEIPT_SCHEMA = 'starnet.packaged-lifecycle-receipt.v1';
 export const SHELL_EXE = 'skynet-desktop.exe';
 export const SIDECAR_EXE = 'node.exe';
-export const WINDOW_TITLE = 'StarNet';
+export const WINDOW_TITLE = 'Hearthwork';
 export const APP_IDENTIFIER = 'app.hearthwork.desktop';
 export const PREFS_FILE = 'lifecycle.json';
 export const PREFS_VERSION = 1;
@@ -90,8 +90,8 @@ export function classifyProcesses(procs, installDir) {
   return out;
 }
 
-/** Visible top-level windows titled exactly "StarNet" that belong to one of the shell pids.
- *  Title equality is deliberate: WebView2 spawns no top-level "StarNet" windows of its own. */
+/** Visible top-level windows titled exactly "Hearthwork" that belong to one of the shell pids.
+ *  Title equality is deliberate: WebView2 spawns no top-level "Hearthwork" windows of its own. */
 export function starnetWindows(windows, shellPids) {
   const pids = new Set((shellPids || []).map(Number));
   return (Array.isArray(windows) ? windows : []).filter((w) =>
@@ -144,7 +144,7 @@ export function judgeIdleClose({ after, relaunch, log }) {
   if (!relaunch) reasons.push('no relaunch snapshot');
   else {
     if (relaunch.shell.length !== 1) reasons.push(`expected exactly 1 shell after relaunch, saw ${relaunch.shell.length}`);
-    if (!relaunch.windows.length) reasons.push('no visible "StarNet" window after relaunch');
+    if (!relaunch.windows.length) reasons.push('no visible "Hearthwork" window after relaunch');
     if (relaunch.health !== true) reasons.push('sidecar /api/health not up after relaunch');
   }
   return { pass: reasons.length === 0, reasons, branch };
@@ -159,7 +159,7 @@ export function judgeTrayClose({ launchedPid, resident, revealed, log }) {
     if (resident.shell.length !== 1) reasons.push(`expected the shell to STAY (1 pid), saw ${resident.shell.length}`);
     else if (launchedPid != null && resident.shell[0].pid !== Number(launchedPid)) reasons.push(`resident shell pid ${resident.shell[0].pid} is not the launched pid ${launchedPid}`);
     if (!resident.sidecar.length) reasons.push('sidecar node.exe was killed although the shell stayed resident');
-    if (resident.windows.length) reasons.push('a visible "StarNet" window remained after close-to-tray (should be hidden)');
+    if (resident.windows.length) reasons.push('a visible "Hearthwork" window remained after close-to-tray (should be hidden)');
     if (resident.health !== true) reasons.push('sidecar /api/health not up while resident');
   }
   const branch = closeBranch(log && log.closeLines);
@@ -168,7 +168,7 @@ export function judgeTrayClose({ launchedPid, resident, revealed, log }) {
   else {
     if (revealed.shell.length !== 1) reasons.push(`expected exactly 1 shell after the second launch (single-instance), saw ${revealed.shell.length}`);
     else if (launchedPid != null && revealed.shell[0].pid !== Number(launchedPid)) reasons.push(`the surviving shell pid ${revealed.shell[0].pid} is not the original ${launchedPid} — the resident was replaced, not revealed`);
-    if (!revealed.windows.length) reasons.push('second launch did NOT reveal a visible "StarNet" window — windowless resident (the 0.10.x escape)');
+    if (!revealed.windows.length) reasons.push('second launch did NOT reveal a visible "Hearthwork" window — windowless resident (the 0.10.x escape)');
   }
   return { pass: reasons.length === 0, reasons, branch };
 }
@@ -263,7 +263,7 @@ async function waitForBoot(drivers, installDir, logMark, waits) {
 
 async function closeMain(drivers, installDir) {
   const s = await snapshot(drivers, installDir, null);
-  if (!s.windows.length) throw new Error('cannot WM_CLOSE: no visible "StarNet" window');
+  if (!s.windows.length) throw new Error('cannot WM_CLOSE: no visible "Hearthwork" window');
   await drivers.closeWindow(s.windows[0].hwnd);
   return s.windows[0];
 }

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/* scripts/qa/saboteur.mjs — deterministic adversarial API sweeps for StarNet.
+/* scripts/qa/saboteur.mjs — deterministic adversarial API sweeps for Hearthwork.
  *
  * This is EL-2's first executable slice. It attacks the real, isolated sidecar instead of
  * mocking handlers: every literal /api route is checked for launch-token and hostile-Origin

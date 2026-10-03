@@ -197,6 +197,23 @@ def listing(book: str):
 
 
 @app.command()
+def publish(book: str,
+            asin: str = typer.Option("", help="ASIN shown in KDP once the paperback is live"),
+            price: Optional[float] = typer.Option(None, help="List price in USD"),
+            date: str = typer.Option("", help="Go-live date YYYY-MM-DD (default: today)"),
+            marketplace: str = typer.Option("amazon.com")):
+    """Record that this book is live on Amazon (after you publish it in KDP)."""
+    import datetime as _dt
+    from .models import Published
+    _, store = _ctx()
+    b = _load(store, book)
+    b.published = Published(asin=asin.strip().upper(), price=price, marketplace=marketplace,
+                            date=date or _dt.date.today().isoformat())
+    store.save(b)
+    typer.echo(f"{b.plan.title} is live ({b.published.asin or 'no ASIN yet'}). The Workshop will count its sales.")
+
+
+@app.command()
 def status(book: str):
     """Show progress and spend for a book."""
     s, store = _ctx()

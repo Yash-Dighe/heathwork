@@ -174,7 +174,7 @@ function legacyCopyForwardStep() {
     copied,
     protectedKeys: ['starnet.save'],
     rollbackKeysLeftInPlace: ['skynet.station.v1'],
-    reason: 'Skynet localStorage keys copy forward without clobbering StarNet keys.'
+    reason: 'Skynet localStorage keys copy forward without clobbering Hearthwork keys.'
   };
 }
 

@@ -1024,7 +1024,7 @@ export function runtimeIsolation(authority, cdpPort) {
     machineVerified = runtimeOwnerMatches && /virtual|vmware|hyper-v|virtualbox|kvm|qemu|parallels|xen/i.test(system);
     proof = machineVerified ? 'hypervisor-detected' : '';
   } else if (authority === 'clean-machine') {
-    // "Clean" is StarNet state, not Windows age. The CDP listener must belong to this principal here;
+    // "Clean" is Hearthwork state, not Windows age. The CDP listener must belong to this principal here;
     // readFreshState then independently proves empty browser + sidecar stores before any mutation.
     machineVerified = runtimeOwnerMatches;
     proof = machineVerified ? 'runtime-owner-plus-empty-starnet-stores' : '';

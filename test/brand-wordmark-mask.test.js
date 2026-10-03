@@ -27,7 +27,7 @@ const path = require('node:path');
 const A = require('./_assert.js');
 
 const root = path.resolve(__dirname, '..');
-const svgPath = path.join(root, 'frontend', 'assets', 'brand', 'starnet-wordmark.svg');
+const svgPath = path.join(root, 'frontend', 'assets', 'brand', 'wordmark.svg');
 const svg = fs.readFileSync(svgPath, 'utf8');
 const css = fs.readFileSync(path.join(root, 'frontend', 'css', 'style.css'), 'utf8');
 const html = fs.readFileSync(path.join(root, 'frontend', 'index.html'), 'utf8');
@@ -60,8 +60,8 @@ A.ok(ar.length === 2, '.logo-img declares an explicit aspect-ratio (a masked <sp
 A.ok(Math.abs((ar[0] / ar[1]) - (vb[0] / vb[1])) < 0.002,
   `.logo-img aspect-ratio ${ar[0]}/${ar[1]} matches the SVG viewBox ${vb[0]}x${vb[1]} (retrace changed the viewBox? copy it into style.css)`);
 
-A.ok(/mask:\s*url\(\.\.\/assets\/brand\/starnet-wordmark\.svg\)/.test(rule),
-  '.logo-img masks with starnet-wordmark.svg');
+A.ok(/mask:\s*url\(\.\.\/assets\/brand\/wordmark\.svg\)/.test(rule),
+  '.logo-img masks with wordmark.svg');
 A.ok(/-webkit-mask:\s*url\(/.test(rule), '.logo-img keeps the -webkit-mask prefix alongside the standard property');
 A.ok(/background-color:\s*var\(--ph\)/.test(rule),
   '.logo-img paints var(--ph) so the mark re-tints with the theme instead of being a fixed colour');

@@ -4,7 +4,7 @@
    Usage:
      node scripts/qa/input-isolation-smoke.mjs --url http://127.0.0.1:5173/?smoke
 
-   The target server must already be running. This drives a pointer-lock FPS through StarNet's
+   The target server must already be running. This drives a pointer-lock FPS through Hearthwork's
    browser.test_* substrate only. A separate read-only Win32 observer samples GetClipCursor,
    GetCursorPos, and GetLastInputInfo throughout. The observer never moves or releases input. */
 import { spawn } from 'node:child_process';

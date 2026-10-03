@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Offline whole-station backup/inspect/restore CLI. Stop StarNet before backup or restore.
+// Offline whole-station backup/inspect/restore CLI. Stop Hearthwork before backup or restore.
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -9,7 +9,7 @@ const Recovery = require('../sidecar/station-recovery.js');
 
 function usage(code = 1) {
   const msg = [
-    'StarNet station recovery (offline — stop StarNet first)',
+    'Hearthwork station recovery (offline — stop Hearthwork first)',
     '',
     'Backup:',
     '  node scripts/station-recovery.mjs backup --workspace <WORKSPACES> --output <file> [--browser-state <backup.json>] [--app-version <v>] [--mutation <id>]',
@@ -47,7 +47,7 @@ function browserStoreFrom(file) {
   const doc = readJson(path.resolve(String(file)));
   if (doc && doc.store && typeof doc.store === 'object') return doc.store;
   if (doc && typeof doc === 'object' && !Array.isArray(doc)) return doc;
-  throw new Error('browser state must be an object or a StarNet browser backup with {store}');
+  throw new Error('browser state must be an object or a Hearthwork browser backup with {store}');
 }
 function printReport(doc) { console.log(JSON.stringify(doc, null, 2)); }
 
@@ -112,7 +112,7 @@ try {
         }
       });
       if (browserMoved && fs.existsSync(browserRollback)) fs.unlinkSync(browserRollback);
-      printReport({ ok: true, action: 'restore', receipt, browserImport: { file: browserOutput, instruction: 'Open StarNet and choose RESTORE BACKUP to import this browser-owned state.' } });
+      printReport({ ok: true, action: 'restore', receipt, browserImport: { file: browserOutput, instruction: 'Open Hearthwork and choose RESTORE BACKUP to import this browser-owned state.' } });
     } catch (e) {
       if (browserActivated && fs.existsSync(browserOutput)) fs.unlinkSync(browserOutput);
       if (browserMoved && fs.existsSync(browserRollback)) fs.renameSync(browserRollback, browserOutput);

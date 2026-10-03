@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// golden.mjs — golden-frame CHANGE DETECTION for StarNet's UI.  (`npm run golden`)
+// golden.mjs — golden-frame CHANGE DETECTION for Hearthwork's UI.  (`npm run golden`)
 //
 // The point (mission DoD #3/#4): a no-code-change re-run is all-PASS with zero human input; a real
 // visual change is FLAGGED with the offending frame; and the vision model then judges ONLY the

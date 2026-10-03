@@ -64,7 +64,7 @@ export const openStableNotifs = `(() => {
       ['07:03', 'saved briefing.md - your agent runs on it now', 'gold'],
       ['07:04', 'routine ran', 'good'],
       ['07:05', 'budget resumed - global cap raised; agents can run again', 'good'],
-      ['07:06', 'StarNet is up to date', 'good'],
+      ['07:06', 'Hearthwork is up to date', 'good'],
       ['07:07', 'routine "morning check" scheduled for NOVA', 'good'],
       ['07:08', 'copied the last reply', 'good'],
       ['07:09', 'rewound agent to an earlier restore point', 'warn'],

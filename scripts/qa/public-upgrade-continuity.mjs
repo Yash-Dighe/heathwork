@@ -128,7 +128,7 @@ async function installFromPublicUpdater() {
   for (let n = 0; n < 100; n++) {
     await sleep(3000);
     observed = JSON.parse(ps(`$apps=@(Get-CimInstance Win32_Process | Where-Object {$_.ExecutablePath -eq $env:PROOF_EXE})
-$setup=@(Get-Process -ErrorAction SilentlyContinue | Where-Object {$_.Name -match '(?i)starnet.*setup|^Au_$' -or $_.MainWindowTitle -like '*StarNet*Setup*'})
+$setup=@(Get-Process -ErrorAction SilentlyContinue | Where-Object {$_.Name -match '(?i)starnet.*setup|^Au_$' -or $_.MainWindowTitle -like '*Hearthwork*Setup*'})
 @{version=(Get-Item $env:PROOF_EXE).VersionInfo.ProductVersion;appPids=@($apps | ForEach-Object {$_.ProcessId});installerPids=@($setup | ForEach-Object {$_.Id})}|ConvertTo-Json -Compress`));
     if (String(observed.version).split('.').slice(0,3).join('.') === targetVersion && observed.appPids.length === 1 && observed.appPids[0] !== priorPid && observed.installerPids.length === 0) break;
     try {
@@ -151,7 +151,7 @@ $window=Get-Process -Id $app.ProcessId
 $node=@(Get-CimInstance Win32_Process | Where-Object {$_.ParentProcessId -eq $app.ProcessId -and $_.ExecutablePath -eq (Join-Path (Split-Path $env:PROOF_EXE) 'node.exe')})
 $ports=@($node | ForEach-Object {Get-NetTCPConnection -State Listen -OwningProcess $_.ProcessId -ErrorAction SilentlyContinue} | Where-Object {$_.LocalAddress -eq '127.0.0.1'})
 @{pid=$app.ProcessId;responding=$window.Responding;window=$window.MainWindowHandle.ToInt64();title=$window.MainWindowTitle;ports=@($ports | ForEach-Object {$_.LocalPort})}|ConvertTo-Json -Compress`));
-    if (live.pid === observed.appPids[0] && live.responding && live.window && live.title === 'StarNet' && live.ports.length === 1) {
+    if (live.pid === observed.appPids[0] && live.responding && live.window && live.title === 'Hearthwork' && live.ports.length === 1) {
       const base = 'http://127.0.0.1:' + live.ports[0];
       const token = await bootToken(base, base);
       const response = await fetch(base + '/api/version', { headers: { Origin: base, 'X-StarNet-Token': token } });

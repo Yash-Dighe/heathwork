@@ -9,7 +9,7 @@
  * value). Exit 0 ONLY when every check is READY.
  *
  * THE LAW IT ENFORCES (READY-GATE, docs/DECISIONS.md + .claude/skills/starnet-verify): no session,
- * report, or doc may claim StarNet is release-ready / "ready" / "go-public-able" without a fresh
+ * report, or doc may claim Hearthwork is release-ready / "ready" / "go-public-able" without a fresh
  * `npm run qa:ready` receipt printed alongside the claim. Lane-level done stays lane-level.
  * Scope boundary: READY is this six-check release-readiness aggregate only. It is not exhaustive
  * product-perfection proof and must never be reported as `PRODUCT PERFECT`; that exact verdict is

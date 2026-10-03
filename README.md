@@ -26,7 +26,14 @@ node sidecar/index.js          # then open http://localhost:8787
 
 Bring your own model key (OpenRouter, Anthropic, OpenAI, Gemini…) or run a local model with Ollama.
 
-For the coloring-book pipeline:
+## Run free with a local model
+
+No key, no account, no bill: install [Ollama](https://ollama.com), pull a model that supports tools
+(`ollama pull qwen3:8b`), and pick **OLLAMA** on the first-run screen or later in
+**SETTINGS → PROVIDERS**. Local models are smaller than the cloud ones, so expect slower and rougher
+work on long tasks, and a model needs a large context window to be useful.
+
+## The coloring-book pipeline
 
 ```bash
 cd ventures/coloring-books

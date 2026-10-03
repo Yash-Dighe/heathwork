@@ -90,6 +90,14 @@ class PageState(BaseModel):
     notes: list[str] = []
 
 
+class Published(BaseModel):
+    """Set when the book is live on Amazon (you uploaded it in KDP). The Hearthwork ledger reads this."""
+    asin: str = ""
+    price: Optional[float] = None
+    marketplace: str = "amazon.com"
+    date: str = ""  # YYYY-MM-DD
+
+
 class Usage(BaseModel):
     image_calls: int = 0
     llm_input_tokens: int = 0
@@ -105,6 +113,7 @@ class Book(BaseModel):
     pages: list[PageState]
     cover_art: Optional[str] = None
     listing: Optional[Listing] = None
+    published: Optional[Published] = None
     research_file: Optional[str] = None
     usage: Usage = Usage()
 

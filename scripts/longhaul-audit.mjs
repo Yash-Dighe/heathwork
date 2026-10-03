@@ -3,7 +3,7 @@
 
 /* Deterministic, disposable 30-90 day storage audit.
  *
- * This generator never reads the user's StarNet data root. Every run creates its own
+ * This generator never reads the user's Hearthwork data root. Every run creates its own
  * mkdtemp workspace, fills it with schema-compatible synthetic state, measures the real
  * sidecar plus the frontend Workstreams store, and removes the temp tree unless --keep is
  * supplied. The fixed seed/content makes before/after receipts comparable.

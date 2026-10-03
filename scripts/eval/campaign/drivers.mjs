@@ -38,11 +38,11 @@ async function terminateChild(child, opts = {}) {
 
 async function waitHealth(base, child) {
   for (let attempt = 0; attempt < 180; attempt++) {
-    if (child.exitCode != null) throw new Error(`StarNet process exited ${child.exitCode} before health`);
+    if (child.exitCode != null) throw new Error(`Hearthwork process exited ${child.exitCode} before health`);
     try { const response = await fetch(base + '/health', { signal: AbortSignal.timeout(1000) }); if (response.ok) return response.json(); } catch (_) {}
     await sleep(100);
   }
-  throw new Error('StarNet sidecar health timeout');
+  throw new Error('Hearthwork sidecar health timeout');
 }
 
 export function installedDesktopStartupLog(workspaces) {
@@ -71,7 +71,7 @@ export async function waitInstalledDesktopPort({ startupLog, afterBytes = 0, chi
 async function discoverToken(base) {
   const response = await fetch(base + '/', { signal: AbortSignal.timeout(5000) });
   const html = await response.text(), match = html.match(/window\.__STARNET_API_TOKEN__=("(?:\\.|[^"])*")/);
-  if (!match) throw new Error('installed StarNet API token could not be discovered');
+  if (!match) throw new Error('installed Hearthwork API token could not be discovered');
   return JSON.parse(match[1]);
 }
 
@@ -87,7 +87,7 @@ async function api(base, token, path, body) {
 }
 
 async function readStarNetRun(response, base, token) {
-  if (!response.ok) throw new Error(`StarNet run HTTP ${response.status}: ${(await response.text()).slice(0, 500)}`);
+  if (!response.ok) throw new Error(`Hearthwork run HTTP ${response.status}: ${(await response.text()).slice(0, 500)}`);
   const reader = response.body.getReader(), decoder = new TextDecoder();
   let buffer = '', finalText = '', firstOutputMs = null, runId = '', end = null;
   const events = [], started = performance.now();
@@ -140,7 +140,7 @@ export async function startStarNetDriver(opts) {
   const health = await waitHealth(base, child), token = await discoverToken(base);
   try { await api(base, token, '/api/connectors/remove', { id: CONNECTOR_ID }); } catch (_) {}
   const configured = await api(base, token, '/api/connectors', { id: CONNECTOR_ID, label: 'Parity fixture host', transport: 'http', url: fixtureUrl, enabled: true, timeoutMs: 120000 });
-  if (!configured.connected) throw new Error('StarNet fixture connector did not connect: ' + JSON.stringify(configured).slice(0, 500));
+  if (!configured.connected) throw new Error('Hearthwork fixture connector did not connect: ' + JSON.stringify(configured).slice(0, 500));
 
   return {
     process: child, base,

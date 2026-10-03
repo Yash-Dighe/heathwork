@@ -169,7 +169,7 @@ async function main() {
       'The file must contain these exact lines:',
       '# Phase 4 Proof',
       'verdict: live UI file-write proof',
-      'evidence: StarNet created this through the gamified UI with a live model.',
+      'evidence: Hearthwork created this through the gamified UI with a live model.',
       'Then use notebook.write to remember this exact durable note: phase4-ui-proof-memory.',
       'Finish with one short sentence naming the saved file.'
     ].join('\n');

@@ -3,6 +3,8 @@
   "nameUpper": "HEARTHWORK",
   "identifier": "app.hearthwork.desktop",
   "tagline": "A cozy pixel village where real AI agents do real work.",
+  "github": "",
+  "updaterPubkey": "",
   "urls": {
     "website": "",
     "releasesPage": "",
@@ -13,5 +15,5 @@
     "remoteRelay": "",
     "skillCatalog": ""
   },
-  "_comment": "Run `node scripts/rebrand.mjs` after editing. Empty URLs switch the matching feature off (updates, cloud credits, phone relay, skill market)."
+  "_comment": "Run `node scripts/rebrand.mjs` after editing. \"github\" (owner/repo) derives the releases page and update endpoint. \"updaterPubkey\" comes from `node scripts/updater-keys.mjs`. Empty URLs switch the matching feature off."
 }

@@ -33,7 +33,7 @@ const phase2Summary = readMaybe(join(ROOT, '.dogfood', 'phase2-latest', 'summary
 const phase3Summary = readMaybe(join(ROOT, '.dogfood', 'phase3-latest', 'summary.md'));
 const dogfoodSummary = readMaybe(join(ROOT, '.dogfood', 'dogfood-latest', 'summary.md'));
 
-let md = '# StarNet Phase 4 Baseline\n\n';
+let md = '# Hearthwork Phase 4 Baseline\n\n';
 md += 'Generated: `' + new Date().toISOString() + '`\n\n';
 md += 'This file preserves the latest Phase 1-3 evidence before Phase 4 planning. It is intentionally tracked in `docs/`; raw logs remain under `.dogfood/` and may be regenerated.\n\n';
 md += '## Status Snapshot\n\n';

@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://starnet.local/schemas/eval-trajectory-v1.json",
-  "title": "StarNet redacted agent trajectory v1",
+  "title": "Hearthwork redacted agent trajectory v1",
   "type": "object",
   "additionalProperties": true,
   "required": ["schemaVersion", "taskId", "events"],

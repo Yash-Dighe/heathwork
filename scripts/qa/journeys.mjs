@@ -36,7 +36,7 @@
  *       /workshop-run jail actually SERVES it 200 + runnable html + opaque-origin sandbox CSP.
  *   J5  parityCheck(step) — the reusable sim↔truth sweep every journey calls (exported for reuse).
  *
- * LAWS (Charter Part 5 + StarNet task doctrine):
+ * LAWS (Charter Part 5 + Hearthwork task doctrine):
  *   - NO-FAKE-GREEN: a journey that CANNOT run exits BLOCKED-nonzero; it never silently passes.
  *   - Scripts DETECT + ledger, never notify. This writes .bugloops/journeys-<stamp>/ evidence +
  *     a JSON report; the guardian/overseer file findings.

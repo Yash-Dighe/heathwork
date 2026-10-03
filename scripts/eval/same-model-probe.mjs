@@ -15,14 +15,14 @@ const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 async function waitHealth(base, child) {
   const start = performance.now();
   for (let attempt = 0; attempt < 120; attempt++) {
-    if (child.exitCode != null) throw new Error(`StarNet sidecar exited ${child.exitCode} before health`);
+    if (child.exitCode != null) throw new Error(`Hearthwork sidecar exited ${child.exitCode} before health`);
     try {
       const response = await fetch(base + '/health', { signal: AbortSignal.timeout(1000) });
       if (response.ok) return { bootMs: performance.now() - start, body: await response.json() };
     } catch (_) {}
     await sleep(100);
   }
-  throw new Error('StarNet sidecar health timeout');
+  throw new Error('Hearthwork sidecar health timeout');
 }
 
 async function starnetProbe(opts, prompt, model) {
@@ -111,6 +111,6 @@ const result = { schemaVersion: 'starnet.eval.same-model-probe.v1', generatedAt:
 result.sameModel = result.starnet.model === result.hermes.model && result.starnet.provider === result.hermes.provider;
 result.pass = result.sameModel && result.starnet.ok && result.hermes.ok && result.starnet.text === 'PARITY-PROBE-731' && result.hermes.text === 'PARITY-PROBE-731';
 writeFileSync(resolve(opts.output), JSON.stringify(result, null, 2) + '\n', 'utf8');
-console.log(`[agent-eval] SAME MODEL ${result.pass ? 'PASS' : 'FAIL'} StarNet=${result.starnet.provider}/${result.starnet.model} Hermes=${result.hermes.provider}/${result.hermes.model}`);
+console.log(`[agent-eval] SAME MODEL ${result.pass ? 'PASS' : 'FAIL'} Hearthwork=${result.starnet.provider}/${result.starnet.model} Hermes=${result.hermes.provider}/${result.hermes.model}`);
 console.log(`[agent-eval] probe ${resolve(opts.output)}`);
 process.exitCode = result.pass ? 0 : 1;

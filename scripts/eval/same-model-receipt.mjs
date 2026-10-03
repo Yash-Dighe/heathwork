@@ -109,7 +109,7 @@ const receipt = makeReceipt({
     referenceManifest: manifestEvidence(opts['reference-manifest'])
   },
   limitations: [
-    'The StarNet measurements launch the bound installed runtime node/sidecar directly; they do not measure desktop UI cold boot.',
+    'The Hearthwork measurements launch the bound installed runtime node/sidecar directly; they do not measure desktop UI cold boot.',
     'The exact-output probe is a provider/model equivalence preflight, not the 32-scenario parity gauntlet or a useful-artifact benchmark.',
     'The provider-free control soak cannot replace the pending installed provider-backed 48-hour soak.'
   ]
@@ -118,6 +118,6 @@ signReceipt(receipt, opts['signing-key']);
 mkdirSync(dirname(resolve(opts.receipt)), { recursive: true });
 writeFileSync(resolve(opts.receipt), JSON.stringify(receipt, null, 2) + '\n', 'utf8');
 console.log(`[agent-eval] SAME MODEL RECEIPT ${result.pass ? 'PASS' : 'FAIL'} attempts=${result.attempts} model=${result.comparisonModel || '(missing)'}`);
-if (measurements) console.log(`[agent-eval] medians StarNet first=${measurements.starnet.firstOutputMs.median.toFixed(1)}ms total=${measurements.starnet.totalMs.median.toFixed(1)}ms reference first=${measurements.reference.firstOutputMs.median.toFixed(1)}ms total=${measurements.reference.totalMs.median.toFixed(1)}ms`);
+if (measurements) console.log(`[agent-eval] medians Hearthwork first=${measurements.starnet.firstOutputMs.median.toFixed(1)}ms total=${measurements.starnet.totalMs.median.toFixed(1)}ms reference first=${measurements.reference.firstOutputMs.median.toFixed(1)}ms total=${measurements.reference.totalMs.median.toFixed(1)}ms`);
 console.log('[agent-eval] receipt ' + resolve(opts.receipt));
 process.exitCode = result.pass ? 0 : 1;

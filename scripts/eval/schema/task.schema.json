@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://starnet.local/schemas/eval-task-v1.json",
-  "title": "StarNet agent evaluation task v1",
+  "title": "Hearthwork agent evaluation task v1",
   "type": "object",
   "additionalProperties": true,
   "required": ["schemaVersion", "id", "status"],

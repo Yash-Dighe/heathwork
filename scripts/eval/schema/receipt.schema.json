@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://starnet.local/schemas/eval-receipt-v1.json",
-  "title": "StarNet candidate-bound evaluation receipt v1",
+  "title": "Hearthwork candidate-bound evaluation receipt v1",
   "type": "object",
   "additionalProperties": true,
   "required": ["schemaVersion", "kind", "generatedAt", "contract", "subject", "candidateBound", "result", "evidence", "limitations"],

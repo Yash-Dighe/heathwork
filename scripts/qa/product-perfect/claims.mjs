@@ -356,7 +356,7 @@ export function validateClaimsLedger(ledger, _options = {}) {
   const errors = [];
   if (!ledger || typeof ledger !== 'object' || Array.isArray(ledger)) return { ok: false, errors: ['claims ledger must be an object'] };
   if (ledger.schemaVersion !== 1) errors.push('schemaVersion must be 1');
-  if (ledger.authority !== 'StarNet advertised claims') errors.push('authority must be StarNet advertised claims');
+  if (ledger.authority !== 'Hearthwork advertised claims') errors.push('authority must be Hearthwork advertised claims');
   if (!/^[0-9a-f]{40}$/i.test(text(ledger.auditBaseSha))) errors.push('auditBaseSha must be an exact commit');
   if (!Array.isArray(ledger.requiredDomains) || JSON.stringify(ledger.requiredDomains) !== JSON.stringify(REQUIRED_DOMAINS)) {
     errors.push('requiredDomains must preserve the locked complete domain set');

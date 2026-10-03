@@ -2,7 +2,7 @@
 
 **Why this exists:** the game UI *is* the product, and every prior audit was text-based
 (DOM/API/source) because `preview_screenshot` and `chrome --virtual-time-budget` both hang
-on StarNet's always-animating canvas. Visual incoherence (overlap, clash, off-center,
+on Hearthwork's always-animating canvas. Visual incoherence (overlap, clash, off-center,
 unpolished, layers that don't complement) is invisible to text checks. `scripts/uishoot.mjs`
 is the unlock: it drives headless Chrome over CDP and captures on a **fixed wall-clock wait**.
 

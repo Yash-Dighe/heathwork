@@ -40,4 +40,4 @@ for (const name of ['agent.roster.json', 'agent.save.json']) {
   mkdirSync(dirname(output), { recursive: true });
   writeFileSync(output, JSON.stringify(retarget(parsed, opts.model, opts.provider), null, 2) + '\n', 'utf8');
 }
-console.log(`[agent-eval] isolated StarNet runtime prepared with ${opts.provider}/${opts.model}; credentials were not copied`);
+console.log(`[agent-eval] isolated Hearthwork runtime prepared with ${opts.provider}/${opts.model}; credentials were not copied`);

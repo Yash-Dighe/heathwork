@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// phase3.mjs - StarNet beta-replacement Phase 3 steering runner.
+// phase3.mjs - Hearthwork beta-replacement Phase 3 steering runner.
 //
 // Phase 3 is not a single feature. It is a loop system for 3.1-3.7:
 // dogfood proof, soak, fs.patch, MCP stdio, browser automation, computer-use,
@@ -297,7 +297,7 @@ function writeSummary(allResults, loopCount) {
   };
   writeFileSync(join(OUT, 'phase3-status.json'), JSON.stringify(json, null, 2));
 
-  let md = '# StarNet Phase 3 Evidence\n\n';
+  let md = '# Hearthwork Phase 3 Evidence\n\n';
   md += '- Generated: `' + json.generatedAt + '`\n';
   md += '- Verdict: `' + verdict + '`\n';
   md += '- Loops run: `' + loopCount + '`\n';
@@ -314,7 +314,7 @@ function writeSummary(allResults, loopCount) {
   md += 'Run `npm.cmd run phase3:loop` after each fix. The loop stops when the verdict is green, red, or blocked with no state change; it does not spin on missing keys, missing Cargo, or unimplemented parity surfaces.\n\n';
   md += '## Next Action\n\n';
   const next = latestResults.find(r => r.status === 'fail' || r.status === 'blocked');
-  if (!next) md += 'All Phase 3 gates are green. StarNet is at beta replacement parity for this plan.\n';
+  if (!next) md += 'All Phase 3 gates are green. Hearthwork is at beta replacement parity for this plan.\n';
   else md += 'Work the first non-pass item: `' + next.id + '` - ' + (next.reason || next.title) + '\n';
   writeFileSync(join(OUT, 'summary.md'), md);
 

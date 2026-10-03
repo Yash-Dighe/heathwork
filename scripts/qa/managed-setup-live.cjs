@@ -53,7 +53,7 @@ const { chromium } = require(process.env.STARNET_PLAYWRIGHT_MODULE || 'playwrigh
     proof.selected = await page.evaluate(() => ({ provider: Harness.getProv(), model: Harness.getModel(), bannerHidden: document.getElementById('key-cta').hidden }));
     assert.equal(proof.selected.provider, 'starnet');
     assert.equal(proof.selected.bannerHidden, true);
-    assert.equal(await page.getByText(/no model is selected for STARNET/).count(), 0);
+    assert.equal(await page.getByText(/no model is selected for HEARTHWORK/).count(), 0);
     // Retirement is scoped: another producer's choices survive a resolved setup warning.
     proof.unrelatedChoicesSurvive = await page.evaluate(() => {
       Harness.setModel(''); KeyCTA.refresh();

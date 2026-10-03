@@ -603,7 +603,7 @@ function writeSummary(allResults, loopsRun, stableIterations) {
   };
   writeJson(join(OUT, 't4-update-delivery-status.json'), status);
 
-  let md = '# StarNet T4 Update Delivery Evidence\n\n';
+  let md = '# Hearthwork T4 Update Delivery Evidence\n\n';
   md += '- Generated: `' + status.generatedAt + '`\n';
   md += '- Verdict: `' + status.verdict + '`\n';
   md += '- Update delivery ready: `' + status.updateDeliveryReady + '`\n';

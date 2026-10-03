@@ -34,7 +34,7 @@ if (!FALLBACK_RELEASE) throw new Error('site.js must declare the verified public
 // THE MANIFEST — one topic per page; pagers stay within that topic.
 // ---------------------------------------------------------------------------------------
 export const NAV = [
-  { id: 'start', group: 'Start here', description: 'Install StarNet, choose a model, and give your first agent a task.', items: [
+  { id: 'start', group: 'Start here', description: 'Install Hearthwork, choose a model, and give your first agent a task.', items: [
     { url: 'docs/index.html', title: 'Documentation', kind: 'Overview' },
     { url: 'docs/getting-started.html', title: 'Install & first task', kind: 'Quickstart' },
     { url: 'docs/providers.html', title: 'Models & providers', kind: 'Reference' },
@@ -97,7 +97,7 @@ function topbar(page) {
   const pr = page === 'pricing.html' ? ' class="on"' : '';
   const mk = page === 'market.html' ? ' class="on"' : '';
   return `<header class="topbar" id="topbar">
-  <a class="brand" href="${root || '#top'}" aria-label="StarNet home"><img src="${h('assets/starnet-logo-small.png')}" alt="StarNet" width="355" height="60"></a>
+  <a class="brand" href="${root || '#top'}" aria-label="Hearthwork home"><img src="${h('assets/starnet-logo-small.png')}" alt="Hearthwork" width="355" height="60"></a>
   <nav class="topnav" aria-label="Site">
     <a href="${root}#station">Product</a>
     <a href="${h('docs/index.html')}"${dc}>Docs</a>
@@ -148,7 +148,7 @@ function footer(page) {
   const here = (u) => page === '404.html' ? '/' + u : rel(page, u);
   const home = page === 'index.html' ? '#top' : (page === '404.html' ? '/' : rel(page, 'index.html'));
   return `<footer class="footer">
-  <div class="footer-line">STARNET &middot; a living station of AI agents, doing real work in the dark</div>
+  <div class="footer-line">HEARTHWORK &middot; a living station of AI agents, doing real work in the dark</div>
   <div class="footer-links">
     <a href="${home}">HOME</a>
     <a href="${GITHUB}" target="_blank" rel="noopener">GITHUB</a>
@@ -162,7 +162,7 @@ function footer(page) {
     <a href="${here('legal/terms.html')}">TERMS</a>
     <a href="${CONTACT}">CONTACT</a>
   </div>
-  <div class="footer-fine">MIT license &middot; ${LOADS_SITE_JS.includes(page) ? `<span id="ver-foot">v${FALLBACK_RELEASE}</span> &middot; ` : ''}&copy; <span id="year">2026</span> StarNet &middot; no telemetry, no tracking &mdash; <a href="${here('legal/privacy.html')}">we collect nothing</a></div>
+  <div class="footer-fine">MIT license &middot; ${LOADS_SITE_JS.includes(page) ? `<span id="ver-foot">v${FALLBACK_RELEASE}</span> &middot; ` : ''}&copy; <span id="year">2026</span> Hearthwork &middot; no telemetry, no tracking &mdash; <a href="${here('legal/privacy.html')}">we collect nothing</a></div>
 </footer>`;
 }
 
@@ -224,7 +224,7 @@ for (const page of pages) {
 
   if (isDoc) {
     const entry = FLAT.find(x => x.url === page);
-    html = html.replace(/<title>[\s\S]*?<\/title>/, `<title>${esc(entry.title)} — StarNet Docs</title>`);
+    html = html.replace(/<title>[\s\S]*?<\/title>/, `<title>${esc(entry.title)} — Hearthwork Docs</title>`);
     if (entry.kind !== 'Overview') html = html.replace(/<h1[^>]*>[\s\S]*?<\/h1>/, `<h1>${esc(entry.title)}</h1>`);
     if (page === 'docs/index.html') html = replaceBlock(html, '<!-- docs-directory -->', '<!-- /docs-directory -->', directory(), 'directory', page);
     html = html.replace(/<main class="docs-main"[^>]*>/, '<main class="docs-main" id="main-content" tabindex="-1">');

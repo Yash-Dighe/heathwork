@@ -1,8 +1,8 @@
 #!/usr/bin/env node
-/* scripts/build-skill-catalog.mjs — build the StarNet Skill Market catalog into website/.
+/* scripts/build-skill-catalog.mjs — build the Hearthwork Skill Market catalog into website/.
 
    Sources:
-     sidecar/skills/library/<slug>.md    StarNet Originals already bundled with the app, listed in skills-catalog/originals.json
+     sidecar/skills/library/<slug>.md    Hearthwork Originals already bundled with the app, listed in skills-catalog/originals.json
                                          (each carries its own `version:` line; bump it when its text changes)
      skills-catalog/skills/<slug>/       market-only skills: skill.json + SKILL.md (+ LICENSE, references/)
      skills-catalog/revoked.json         skills the market has PULLED: { "revoked": [{ slug, digest?, reason, at }] }
@@ -71,7 +71,7 @@ function scanOrThrow(slug, files) {
 
 export function buildCatalog() {
   const sources = [];
-  // 1. StarNet Originals from the bundled library
+  // 1. Hearthwork Originals from the bundled library
   const originals = JSON.parse(readText(join(SRC, 'originals.json')));
   const library = catalog.loadDir(LIB, { readdirSync, readFileSync }, { join });
   const bySlug = new Map(library.map(r => [r.slug, r]));
@@ -85,7 +85,7 @@ export function buildCatalog() {
     sources.push({
       slug, version, shelf: 'originals', category: recipe.category, requires: recipe.requires,
       tags: [recipe.category.toLowerCase()].concat(originals.skills[slug].tags || []), license: recipe.license || 'MIT',
-      authors: ['StarNet'], librarySlug: slug,
+      authors: ['Hearthwork'], librarySlug: slug,
       files: [{ path: 'SKILL.md', content: market.libraryToSkillMd(recipe, { version }) }]
     });
   }

@@ -180,7 +180,7 @@ function main() {
 
   const notes = notesFile && existsSync(notesFile)
     ? readText(notesFile).trim()
-    : (notesFile ? '' : 'StarNet desktop ' + version + '. See the release page for details.');
+    : (notesFile ? '' : 'Hearthwork desktop ' + version + '. See the release page for details.');
 
   const platforms = {};
   let assetBase = argVal('--asset-base') || ('https://github.com/' + repo + '/releases/download/' + tag + '/');

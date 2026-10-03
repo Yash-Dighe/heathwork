@@ -294,7 +294,7 @@ async function run() {
     a.ad._internals.dispatch(groupMsg({ text: 'Hearthwork, check the logs' }));
     A.eq(a.got.length, 1, 'being called by name wakes the bot');
     a = mk(['Hearthwork']);
-    a.ad._internals.dispatch(groupMsg({ text: 'hey starnet can you look at this' }));
+    a.ad._internals.dispatch(groupMsg({ text: 'hey hearthwork can you look at this' }));
     A.eq(a.got.length, 1, 'case-insensitively, and anywhere in the sentence');
 
     a = mk(['Ana']);
@@ -320,8 +320,8 @@ async function run() {
     a.ad._internals.dispatch(groupMsg({ text: '@starnetbot still works' , mentions: ['starnetbot'] }));
     A.eq(a.got.length, 1, 'and an @mention still works alongside it');
 
-    const { wakeWords } = mkAdapter({ mentionPatterns: ['  Hearthwork  ', 'starnet', '', 'x', null, 'Ana'] }).ad._internals;
-    A.eq(wakeWords(), ['starnet', 'ana'], 'the list is trimmed, lowercased, de-duplicated, and stripped of anything too short');
+    const { wakeWords } = mkAdapter({ mentionPatterns: ['  Hearthwork  ', 'hearthwork', '', 'x', null, 'Ana'] }).ad._internals;
+    A.eq(wakeWords(), ['hearthwork', 'ana'], 'the list is trimmed, lowercased, de-duplicated, and stripped of anything too short');
   }
 
   /* ---- H. OBSERVE-UNMENTIONED: the gate bought spend safety and paid in amnesia ----------------------------

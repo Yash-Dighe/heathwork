@@ -189,7 +189,7 @@ export function evaluateFaultGauntlet({ tasks, candidateRows, contract }) {
 
 export function makeReceipt({ kind, contract, subject, reference = null, result, evidence = {}, limitations = [] }) {
   const cleanSubject = Object.assign({
-    name: 'StarNet', version: '', commit: '', sourceTree: null, executable: null,
+    name: 'Hearthwork', version: '', commit: '', sourceTree: null, executable: null,
     platform: { platform: process.platform, arch: process.arch, node: process.version }, dirty: null
   }, subject || {});
   const isBound = value => !!(value && value.commit && value.sourceTree && value.executable && value.executable.sha256 &&

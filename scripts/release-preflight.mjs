@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /*
- * release-preflight.mjs — ONE read-only, idempotent checklist for a StarNet release cut.
+ * release-preflight.mjs — ONE read-only, idempotent checklist for a Hearthwork release cut.
  *
  *   npm run release:preflight -- --version 0.10.8
  *   npm run release:preflight -- --next patch|minor|major
@@ -325,14 +325,14 @@ export function runPreflight(ctx, io) {
   {
     const kf = ctx.keyFile;
     if (io.exists(kf)) rows.push(row('updater-key', 'updater signing key present', 'PASS', 'file exists (contents never read or printed)'));
-    else rows.push(row('updater-key', 'updater signing key present', 'FAIL', 'missing: ' + kf, 'restore ~/.tauri/starnet-updater.key from an OFFLINE backup (runbook §4). Without it no installed StarNet can ever update again. The train signs on CI with the TAURI_SIGNING_PRIVATE_KEY secret — local presence is your proof you still hold it'));
+    else rows.push(row('updater-key', 'updater signing key present', 'FAIL', 'missing: ' + kf, 'restore ~/.tauri/starnet-updater.key from an OFFLINE backup (runbook §4). Without it no installed Hearthwork can ever update again. The train signs on CI with the TAURI_SIGNING_PRIVATE_KEY secret — local presence is your proof you still hold it'));
     rows.push(row('updater-key-backup', 'updater key backed up offline (≥2 copies)', 'SKIP', 'unverifiable by machine — human attestation', 'runbook §4.1: confirm two offline copies exist before you push the tag'));
   }
 
   // ── release notes ──
   {
     const notes = io.readText('RELEASE_NOTES.md');
-    const header = notes == null ? null : (/^#\s*StarNet\s+v?(\S+)/m.exec(stripBom(notes)) || [])[1];
+    const header = notes == null ? null : (/^#\s*Hearthwork\s+v?(\S+)/m.exec(stripBom(notes)) || [])[1];
     const todo = notes != null && /TODO: summarize/.test(notes);
     if (notes == null) rows.push(row('notes', 'RELEASE_NOTES.md for ' + (target ? 'v' + target : 'target'), 'FAIL', 'RELEASE_NOTES.md missing', 'release-bump scaffolds it; write the real user-facing notes'));
     else if (target && header === target && !todo) rows.push(row('notes', 'RELEASE_NOTES.md for v' + target, 'PASS', 'header matches, no TODO scaffold'));

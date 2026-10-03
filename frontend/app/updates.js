@@ -10,11 +10,13 @@ const Updates = (() => {
   // ALL user data (workspaces live in Application Support; localStorage/IndexedDB in the WebView
   // store keyed by the unchanged bundle id — both OUTSIDE the app bundle the installer replaces).
   // Kept in sync with tauri.conf.json plugins.updater.endpoints[0] (same repo, /releases/latest).
-  // fork: from brand.json; with no updater endpoint configured the in-app updater stays off.
-  const BRAND_URLS = (typeof BRAND !== 'undefined' ? BRAND.urls : {});
-  const RELEASES_PAGE = BRAND_URLS.releasesPage || BRAND_URLS.website || '';
+  // fork: RELEASES_PAGE is written by scripts/rebrand.mjs from brand.json "github" (keep it a literal:
+  // test/update-state-parity.test.js locks it to the updater endpoint's owner/repo).
+  const RELEASES_PAGE = ''; // @rebrand:releases-page
+  // With no updater endpoint configured in brand.json, the in-app updater stays off (no check, no error).
+  const UPDATER_CONFIGURED = typeof BRAND === 'undefined' || !!(BRAND.urls && BRAND.urls.updaterEndpoint);
   const CORE = (typeof UpdateCore !== 'undefined') ? UpdateCore : null;
-  const TAURI = (BRAND_URLS.updaterEndpoint && typeof window !== 'undefined' && window.__TAURI__ && window.__TAURI__.core) ? window.__TAURI__.core : null;
+  const TAURI = (UPDATER_CONFIGURED && typeof window !== 'undefined' && window.__TAURI__ && window.__TAURI__.core) ? window.__TAURI__.core : null;
   const invoke = (cmd, args) => TAURI.invoke(cmd, args || {});
   const esc = s => (typeof U !== 'undefined' && U.esc) ? U.esc(String(s == null ? '' : s)) : String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /*
- * go-live-credits.mjs — open StarNet Credits to members, in one reviewable step.
+ * go-live-credits.mjs — open Hearthwork Credits to members, in one reviewable step.
  *
  * WHY THIS EXISTS. Turning the paid tier on used to be a hand-run checklist spread across a sidecar
  * constant, two flags in one browser file, a list inside another script, and a topnav link that had
@@ -146,7 +146,7 @@ async function probe(url) {
 
 /* ---------- run ------------------------------------------------------------------------------- */
 const url = bakedCloudUrl();
-console.log('StarNet Credits go-live');
+console.log('Hearthwork Credits go-live');
 console.log('  baked service URL (sidecar/index.js CLOUD_URL_DEFAULT): ' + url + '\n');
 
 /* --no-probe exists for the test gate, which runs offline and is asking a different question: not

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /*
- * release-cut.mjs — one-command desktop release cutter for StarNet.
+ * release-cut.mjs — one-command desktop release cutter for Hearthwork.
  *
  * Goes trunk -> signed NSIS installer + updater .sig + latest.json staged in release/,
  * then prints the exact upload checklist for the public GitHub Releases channel.
@@ -239,7 +239,7 @@ async function main() {
   const installerUrl = assetBase + installerName;
 
   const notes = existsSync(NOTES_FILE) ? readText(NOTES_FILE).trim()
-    : 'StarNet desktop ' + version + '. See the release page for details.';
+    : 'Hearthwork desktop ' + version + '. See the release page for details.';
 
   let signature = 'DRY-RUN-NO-SIG';
   if (!DRY_RUN) {
@@ -284,7 +284,7 @@ async function main() {
   log('      needed for the endpoint — but the installer URL inside latest.json is pinned to');
   log('      the v' + version + ' tag, so the tag MUST be exactly v' + version + '.');
   log('   5. Prove it live:  node scripts/verify-update-host.mjs');
-  log('   6. Unattended update proof: launch an OLDER installed StarNet, open System -> Updates,');
+  log('   6. Unattended update proof: launch an OLDER installed Hearthwork, open System -> Updates,');
   log('      confirm it sees v' + version + ', downloads, verifies the signature, and installs.');
   log('============================================================');
 }

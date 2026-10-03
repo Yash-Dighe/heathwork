@@ -202,7 +202,7 @@ jobs:
         shell: bash
         run: bash scripts/hydrate-sharp-macos-x64.sh
 
-      - name: Stage StarNet Google sign-in registration
+      - name: Stage Hearthwork Google sign-in registration
         env:
           STARNET_GOOGLE_DESKTOP_CLIENT_JSON: ${{ secrets.STARNET_GOOGLE_DESKTOP_CLIENT_JSON }}
         run: node scripts/stage-google-client.mjs
@@ -341,7 +341,7 @@ jobs:
           # step. Exposing them here makes Tauri block inside notarytool --wait, which can
           # outlive GitHub's six-hour runner limit and discard a valid signed build.
           # Windows Authenticode tier: the credential gate above makes Azure Artifact Signing
-          # mandatory for public releases. Tauri signs StarNet.exe, NSIS components, and the
+          # mandatory for public releases. Tauri signs Hearthwork.exe, NSIS components, and the
           # final installer. The bundled official Node runtime already carries a valid OpenJS
           # Foundation Authenticode signature; the post-build trust proof checks all three.
           # Injected via --config so keyless/local builds never try to reach Azure.
@@ -548,8 +548,8 @@ jobs:
           if ($null -eq $uninstaller) { throw "[$env:TARGET] installed payload has no uninstall.exe" }
 
           Assert-Authenticode -Label 'NSIS installer' -Path $installer.FullName -PublisherPattern 'CN=Andrew Sims(?:,|$)'
-          Assert-Authenticode -Label 'installed StarNet executable' -Path $app.FullName -PublisherPattern 'CN=Andrew Sims(?:,|$)'
-          Assert-Authenticode -Label 'installed StarNet uninstaller' -Path $uninstaller.FullName -PublisherPattern 'CN=Andrew Sims(?:,|$)'
+          Assert-Authenticode -Label 'installed Hearthwork executable' -Path $app.FullName -PublisherPattern 'CN=Andrew Sims(?:,|$)'
+          Assert-Authenticode -Label 'installed Hearthwork uninstaller' -Path $uninstaller.FullName -PublisherPattern 'CN=Andrew Sims(?:,|$)'
           Assert-Authenticode -Label 'installed bundled Node runtime' -Path $node.FullName -PublisherPattern 'CN=OpenJS Foundation(?:,|$)'
           $expectedNodeVersion = (& node -e "import('./scripts/prepare-node.mjs').then(m => console.log(m.NODE_VERSION))").Trim()
           $actualNodeVersion = (& $node.FullName --version).Trim()
@@ -986,7 +986,7 @@ jobs:
             gh release create "$TAG" \
               --repo "$REPO" \
               --draft \
-              --title "StarNet $VERSION" \
+              --title "Hearthwork $VERSION" \
               --notes-file RELEASE_NOTES.md \
               staged/*
           fi

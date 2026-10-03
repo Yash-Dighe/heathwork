@@ -49,7 +49,7 @@ A.notThrows(() => deriveCustomTheme(NaN, undefined, 'x'), 'malformed inputs deri
 A.ok(/^#[0-9a-f]{6}$/.test(deriveCustomTheme(NaN, undefined, 'x')['--ph']), 'malformed inputs still yield a valid hex --ph (default hue 35)');
 
 /* ---- persistence + the theme-bezel-var TRAP (source-lock) ---- */
-A.ok(/themeHue:\s*35,\s*themeSat:\s*100,\s*themeGlow:\s*100/.test(uiSrc), 'defaults() seeds themeHue/themeSat/themeGlow');
+A.ok(/themeHue:\s*34,\s*themeSat:\s*70,\s*themeGlow:\s*60/.test(uiSrc), 'defaults() seeds themeHue/themeSat/themeGlow');
 A.ok(/function save\(\)[\s\S]{0,120}localStorage\.setItem\(KEY/.test(uiSrc), 'settings persist to localStorage (survive reload)');
 // applySettings re-derives on load and writes the vars on document.body (NOT :root) — the bezel trap
 A.ok(/s\.theme === 'custom'[\s\S]{0,200}deriveCustomTheme\(s\.themeHue, s\.themeSat, s\.themeGlow\)/.test(uiSrc), 'applySettings re-derives the custom palette from the persisted hue/sat/glow');

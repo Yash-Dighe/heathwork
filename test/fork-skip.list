@@ -44,3 +44,40 @@ website-live-preview.test.js
 website-pricing-hold.test.js
 website-skill-market.test.js
 world-agent-click.test.js
+
+# --- StarNet artwork tests (the art was removed; re-enable each as the village art set lands) ---
+sprite-assets.test.js
+sprite-loading.test.js
+sprite-sit-facing.test.js
+sprite-walk-motion.test.js
+sprite-detached-prop.test.js
+sprite-direction-details.test.js
+world-immersion-characters.test.js
+authored-prop-content.test.js
+authored-machine-config.test.js
+authored-service-content.test.js
+coordinated-prop-recipes.test.js
+skin-study-preview.test.js
+projection-prop-effects.test.js
+projection-load-geometry.test.js
+remaster-physical-fit.test.js
+industrial-shells.test.js
+frontend-dist-staging.test.js
+remote-view.test.js
+
+# --- self-hosted updates: pending `node scripts/updater-keys.mjs` + brand.json "github" ---
+minisign-verify.test.js
+update-state-parity.test.js
+release-cut.test.js
+
+# --- StarNet's own release train (Authenticode/notarization, starnet-releases repo, RELEASE_NOTES) ---
+release-bump.test.js
+source-release-mirror.test.js
+release-train-windows-trust.test.js
+desktop-build-macos-notarization.test.js
+
+# --- already failing upstream at 5591dd81 in a clean checkout ---
+qa-product-perfect-claims.test.js
+
+# --- StarNet QA ledger (hash-pinned to upstream source; any fork change re-queues it by design) ---
+qa-product-perfect.test.js

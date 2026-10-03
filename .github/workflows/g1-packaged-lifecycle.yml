@@ -81,7 +81,7 @@ jobs:
           "CANDIDATE_SOURCE=$source" >> $env:GITHUB_ENV
           "TARGET_VERSION=$targetVersion" >> $env:GITHUB_ENV
           "BASELINE_VERSION=$baselineVersion" >> $env:GITHUB_ENV
-          "EXE=$env:LOCALAPPDATA\StarNet\skynet-desktop.exe" >> $env:GITHUB_ENV
+          "EXE=$env:LOCALAPPDATA\Hearthwork\skynet-desktop.exe" >> $env:GITHUB_ENV
       - name: Prove public check, install, automatic restart and populated state continuity
         shell: pwsh
         env:
@@ -144,7 +144,7 @@ jobs:
           Start-Sleep -Seconds 5
           if (Get-Process skynet-desktop -ErrorAction SilentlyContinue) { taskkill /IM skynet-desktop.exe /T /F | Out-Null }
           $exe = Get-ChildItem "$env:LOCALAPPDATA" -Recurse -Filter 'skynet-desktop.exe' -ErrorAction SilentlyContinue |
-            Where-Object { $_.FullName -match 'StarNet' } | Select-Object -First 1
+            Where-Object { $_.FullName -match 'Hearthwork' } | Select-Object -First 1
           if ($null -eq $exe) { throw "installed skynet-desktop.exe not found under LOCALAPPDATA" }
           "EXE=$($exe.FullName)" >> $env:GITHUB_ENV
           "INSTALL_DIR=$($exe.DirectoryName)" >> $env:GITHUB_ENV
