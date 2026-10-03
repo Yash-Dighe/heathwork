@@ -80,6 +80,7 @@
       + (b.stage === 'live' ? '<span>' + (b.unitsSold || 0) + ' sold</span><span>' + money(b.royaltyUSD) + '</span>' : '')
       + (b.published && b.published.asin ? '<span class="dim">' + esc(b.published.asin) + '</span>' : '')
       + '</div>'
+      + (b.pagesGenerated ? '<button class="bb sm ws-review-btn">REVIEW PAGES' + (b.pagesAwaiting ? ' (' + b.pagesAwaiting + ')' : '') + '</button>' : '')
       + (canLive ? '<form class="ws-live-form" hidden><input name="asin" placeholder="ASIN (from KDP)" maxlength="20"><input name="price" placeholder="price" value="' + esc(b.price || '9.99') + '" size="5"><button class="bb sm" type="submit">CONFIRM LIVE</button></form>'
         + '<button class="bb sm ws-live-btn">MARK LIVE</button>' : '')
       + '</div></div>';
@@ -163,6 +164,8 @@
     drop.addEventListener('dragleave', () => drop.classList.remove('over'));
     drop.addEventListener('drop', e => { e.preventDefault(); drop.classList.remove('over'); const f = e.dataTransfer && e.dataTransfer.files[0]; if (f) upload(f); });
 
+    body.querySelectorAll('.ws-review-btn').forEach(btn => btn.addEventListener('click', () =>
+      openReview(body, v, btn.closest('.ws-book').getAttribute('data-book'))));
     body.querySelectorAll('.ws-book').forEach(card => {
       const btn = card.querySelector('.ws-live-btn'), form = card.querySelector('.ws-live-form');
       if (!btn || !form) return;
@@ -175,6 +178,76 @@
           render(body, j.venture);
         } catch (err) { if (StationUI.notify) StationUI.notify('Could not mark it live: ' + err.message, 'warn'); }
       });
+    });
+  }
+
+  /* ---------- PAGE REVIEW: the Commander's approval step ---------- */
+  const imgUrls = new Map();
+  async function pageImg(el, vid, book, file) {
+    const key = vid + '/' + book + '/' + file;
+    let url = imgUrls.get(key);
+    if (!url) {
+      try {
+        const r = await fetch('/api/ventures/img?id=' + encodeURIComponent(vid) + '&book=' + encodeURIComponent(book) + '&file=' + encodeURIComponent(file));
+        if (!r.ok) return;
+        url = URL.createObjectURL(await r.blob()); imgUrls.set(key, url);
+      } catch (_) { return; }
+    }
+    el.style.backgroundImage = 'url("' + url + '")';
+  }
+
+  async function openReview(body, v, book) {
+    body.innerHTML = '<div class="ws"><p class="dim">loading pages…</p></div>';
+    let data;
+    try { data = await api('GET', '/api/ventures/pages?id=' + encodeURIComponent(v.id) + '&book=' + encodeURIComponent(book)); }
+    catch (e) { body.innerHTML = '<div class="ws"><p class="ws-warn">' + esc(e.message) + '</p></div>'; return; }
+    renderReview(body, v, data);
+  }
+
+  function renderReview(body, v, data) {
+    const pages = data.pages;
+    const counts = { approved: 0, generated: 0, rejected: 0, pending: 0 };
+    pages.forEach(p => { counts[p.status] = (counts[p.status] || 0) + 1; });
+    const clean = pages.filter(p => p.status === 'generated' && p.chosen && !((p.variants.find(x => x.file === p.chosen) || {}).flags || []).length);
+    const card = p => {
+      const ch = p.variants.find(x => x.file === p.chosen) || null;
+      const flags = ch ? ch.flags.filter(f => f !== 'rejected in review') : [];
+      return '<div class="wr-page st-' + esc(p.status) + '" data-n="' + p.n + '">'
+        + '<div class="wr-img" data-file="' + esc(p.chosen || '') + '">' + (p.chosen ? '' : '<span>' + (p.status === 'rejected' ? 'sent back — redraw next run' : 'not drawn yet') + '</span>') + '</div>'
+        + '<div class="wr-meta"><b>' + p.n + '. ' + esc(p.title) + '</b><span class="wr-st">' + esc(p.status.toUpperCase()) + '</span></div>'
+        + (p.variants.length > 1 ? '<div class="wr-vars">' + p.variants.map((x, i) => '<button class="wr-var' + (x.file === p.chosen ? ' on' : '') + '" data-file="' + esc(x.file) + '" title="' + esc((x.flags || []).join(', ') || 'no flags') + '">v' + (i + 1) + (x.score != null ? ' · ' + x.score : '') + '</button>').join('') + '</div>' : '')
+        + (flags.length ? '<div class="wr-flags">⚠ ' + flags.map(esc).join(' · ') + '</div>' : (ch ? '<div class="wr-ok">QC clean' + (ch.score != null ? ' · ' + ch.score : '') + '</div>' : ''))
+        + (p.notes.length ? '<div class="wr-note dim">note: ' + esc(p.notes[p.notes.length - 1]) + '</div>' : '')
+        + (p.status !== 'approved' && p.chosen ? '<div class="wr-acts"><button class="bb sm wr-approve">✓ APPROVE</button><button class="bb sm wr-redo">↻ REDO</button></div>'
+          + '<form class="wr-redo-form" hidden><input name="note" maxlength="300" placeholder="what to fix (goes into the next drawing)"><button class="bb sm" type="submit">SEND BACK</button></form>' : '')
+        + (p.status === 'approved' ? '<div class="wr-acts"><button class="bb sm wr-redo">↻ REDO</button></div><form class="wr-redo-form" hidden><input name="note" maxlength="300" placeholder="what to fix"><button class="bb sm" type="submit">SEND BACK</button></form>' : '')
+        + '</div>';
+    };
+    body.innerHTML = '<div class="ws wr">'
+      + '<div class="wr-head"><button class="bb sm wr-back">◂ WORKSHOP</button><div class="ws-name">' + esc(data.book.title) + '<small>page review</small></div>'
+      + '<div class="wr-counts"><span class="ok">' + counts.approved + ' approved</span> · ' + (counts.generated || 0) + ' waiting · ' + (counts.rejected || 0) + ' sent back · ' + (counts.pending || 0) + ' not drawn</div>'
+      + (clean.length ? '<button class="bb wr-approve-clean">✓ APPROVE ' + clean.length + ' QC-CLEAN PAGE' + (clean.length === 1 ? '' : 'S') + '</button>' : '') + '</div>'
+      + '<p class="dim wr-help">You are the art director: approve pages that are ready to print, pick another variant, or send a page back with a note. Approved pages are the only ones that go in the book.</p>'
+      + '<div class="wr-grid">' + pages.map(card).join('') + '</div></div>';
+
+    const submit = async ops => {
+      try { const j = await api('POST', '/api/ventures/review', Object.assign({ id: v.id, book: data.book.slug }, ops)); renderReview(body, j.venture, j); }
+      catch (e) { if (StationUI.notify) StationUI.notify('Review failed: ' + e.message, 'warn'); }
+    };
+    body.querySelector('.wr-back').addEventListener('click', () => build(body));
+    const ac = body.querySelector('.wr-approve-clean');
+    if (ac) ac.addEventListener('click', () => submit({ approve: clean.map(p => p.n) }));
+    body.querySelectorAll('.wr-page').forEach(el => {
+      const n = Number(el.getAttribute('data-n'));
+      const im = el.querySelector('.wr-img'); const f = im.getAttribute('data-file');
+      if (f) pageImg(im, v.id, data.book.slug, f);
+      el.querySelectorAll('.wr-var').forEach(b => b.addEventListener('click', () => submit({ choose: [{ n, file: b.getAttribute('data-file') }] })));
+      const ap = el.querySelector('.wr-approve'); if (ap) ap.addEventListener('click', () => submit({ approve: [n] }));
+      const rd = el.querySelector('.wr-redo'), form = el.querySelector('.wr-redo-form');
+      if (rd && form) {
+        rd.addEventListener('click', () => { form.hidden = false; form.querySelector('input').focus(); });
+        form.addEventListener('submit', e => { e.preventDefault(); submit({ reject: [{ n, note: new FormData(form).get('note') }] }); });
+      }
     });
   }
 

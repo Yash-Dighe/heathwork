@@ -38,6 +38,20 @@ const { SidecarFixture } = require('./helpers/sidecar-fixture.js');
     A.ok(art.status === 200 && art.headers.get('content-type') === 'image/png', 'the shelf can show its cover art');
     A.eq((await fx.request('/api/ventures/art?id=coloring-books&book=..%2F..%2Fetc')).status, 404, 'art paths cannot escape the book');
 
+    // PAGE REVIEW: send page 3 back with a note, then pick it again and approve it
+    let pr = await fx.json('GET', '/api/ventures/pages?id=coloring-books&book=cozy-cottage-kitchens');
+    A.ok(pr.status === 200 && pr.body.pages.length === 24 && pr.body.pages[0].variants.length === 1, 'GET pages lists every page with its variants');
+    pr = await fx.json('POST', '/api/ventures/review', { id: 'coloring-books', book: 'cozy-cottage-kitchens', reject: [{ n: 3, note: 'bigger teapot' }] });
+    const p3 = pr.body.pages.find(p => p.n === 3);
+    A.ok(pr.status === 200 && p3.status === 'rejected' && p3.notes[0] === 'bigger teapot' && p3.chosen === null, 'reject: status, note, and the variant is unchosen');
+    A.ok(p3.variants[0].flags.includes('rejected in review'), 'the rejected image is flagged so QC never re-picks it');
+    A.eq(pr.body.venture.metrics.books[0].stage, 'listed', 'a rejected page on a built book does not invent a stage change (files decide)');
+    A.eq((await fx.json('POST', '/api/ventures/review', { id: 'coloring-books', book: 'cozy-cottage-kitchens', approve: [3] })).status, 400, 'a page with no chosen image cannot be approved');
+    pr = await fx.json('POST', '/api/ventures/review', { id: 'coloring-books', book: 'cozy-cottage-kitchens', choose: [{ n: 3, file: 'raw/p.png' }], approve: [3] });
+    A.eq(pr.body.pages.find(p => p.n === 3).status, 'approved', 'choose + approve in one call');
+    A.eq((await fx.request('/api/ventures/img?id=coloring-books&book=cozy-cottage-kitchens&file=raw/p.png')).status, 404, 'missing image is a 404');
+    A.eq((await fx.request('/api/ventures/img?id=coloring-books&book=cozy-cottage-kitchens&file=..%2Fbook.json')).status, 404, 'only raw/*.png can be served');
+
     r = await fx.json('POST', '/api/ventures/publish', { id: 'coloring-books', book: 'cozy-cottage-kitchens', asin: 'B0TESTASIN1', price: 9.99, date: '2026-09-01' });
     A.ok(r.status === 200 && r.body.venture.metrics.booksLive === 1, 'MARK LIVE: the book is live');
 

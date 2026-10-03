@@ -32,7 +32,8 @@
     { id: 'orchestrator', label: 'TASK DELEGATION',          glyph: '🕸', desc: 'Delegate subtasks to summoned crew, summon new agents, and schedule routines.' },
     { id: 'studio',       label: 'MEDIA STUDIO',             glyph: '🎨', desc: 'Generate images, analyse images, record voice clips, and cut DaVinci Resolve timelines — on the keys the agent already uses.' },
     { id: 'memory',       label: 'MEMORY NOTEBOOK',          glyph: '📓', desc: 'The agent’s private memory and saved skills.' },   // task plans moved to the computer (taskplan freebie, 2026-08-17)
-    { id: 'jukebox',      label: 'JUKEBOX (SPOTIFY)',        glyph: '♫',  desc: 'Search and control your Spotify — play, pause, queue, “what’s playing”.' }
+    { id: 'jukebox',      label: 'JUKEBOX (SPOTIFY)',        glyph: '♫',  desc: 'Search and control your Spotify — play, pause, queue, “what’s playing”.' },
+    { id: 'press',        label: 'COLORING BOOK PRESS',      glyph: '✎',  desc: 'Research niches, plan coloring books, draw pages and build KDP-ready PDFs — you approve every page.' }
   ];
 
   // capId -> the objectType whose grants carry that capId (the prop that must be placed to grant it).

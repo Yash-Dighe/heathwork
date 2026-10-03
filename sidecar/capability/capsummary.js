@@ -36,7 +36,8 @@ const CAPS = [
   // `alt`: a narrower true claim when the headline tool is gone but a sibling survives (image generation deferred as
   // certainly unavailable -- no image connection -- while image_analyze still works). Never claim the headline then.
   { id: 'studio',       probe: 'image_generate',  have: 'generate and analyze images', object: 'a STUDIO', alt: { probe: 'image_analyze', have: 'analyze images' } },
-  { id: 'jukebox',      probe: 'spotify_play',    have: 'search and control Spotify', object: 'a JUKEBOX' }
+  { id: 'jukebox',      probe: 'spotify_play',    have: 'search and control Spotify', object: 'a JUKEBOX' },
+  { id: 'press',        probe: 'press_status',    have: 'run the coloring-book pipeline (plan, draw, build print files)', object: 'a COLORING BOOK PRESS' }
 ];
 
 // The powers a Commander most often assumes an agent has -> highest over-promise risk -> nag if absent.

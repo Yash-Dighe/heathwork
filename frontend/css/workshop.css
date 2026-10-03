@@ -86,3 +86,29 @@
 @keyframes ws-shine { to { background-position: -200% 0; } }
 @keyframes ws-pop { from { transform: scale(.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { .ws-fanfare { animation: none; } .ws-xp-fill { transition: none; } }
+
+/* ---- page review ---- */
+.wr-head { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.wr-counts { font-size: 13px; flex: 1; }
+.wr-counts .ok { color: var(--ok); }
+.wr-help { font-size: 12px; margin: 0; }
+.wr-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 10px; }
+.wr-page { background: var(--panel2); border: 2px solid rgba(var(--ph-rgb), .18); border-radius: var(--r); padding: 6px; display: flex; flex-direction: column; gap: 4px; }
+.wr-page.st-approved { border-color: rgba(var(--ok-rgb), .8); }
+.wr-page.st-rejected { border-color: rgba(var(--bad-rgb), .55); }
+.wr-img { aspect-ratio: 3 / 4; border-radius: 4px; background: #fff center/contain no-repeat; display: flex; align-items: center; justify-content: center; }
+.wr-img span { color: #6b5a44; font-size: 12px; padding: 8px; text-align: center; }
+.wr-meta { display: flex; justify-content: space-between; gap: 6px; font-size: 12px; }
+.wr-st { font-size: 10px; letter-spacing: 1px; color: var(--gold); }
+.st-approved .wr-st { color: var(--ok); }
+.wr-vars { display: flex; gap: 4px; flex-wrap: wrap; }
+.wr-var { font: inherit; font-size: 11px; padding: 1px 6px; border-radius: 5px; border: 1px solid rgba(var(--ph-rgb), .35); background: transparent; color: var(--text); cursor: pointer; }
+.wr-var.on { background: rgba(var(--gold-rgb), .25); border-color: var(--gold); }
+.wr-flags { font-size: 11px; color: var(--warn); }
+.wr-ok { font-size: 11px; color: var(--ok); }
+.wr-note { font-size: 11px; }
+.wr-acts { display: flex; gap: 6px; }
+.wr-redo-form { display: flex; gap: 4px; }
+.wr-redo-form input { flex: 1; min-width: 0; background: var(--ph-faint); color: var(--text); border: 1px solid rgba(var(--ph-rgb), .35); border-radius: 5px; padding: 3px 6px; font: inherit; font-size: 12px; }
+
+.wr-redo-form[hidden], .ws-live-form[hidden] { display: none; }

@@ -36,7 +36,8 @@ const EXPECTED = {
   plugin_terminal: 'plugin',   // a plugin terminal = that bound plugin's tools (dynamic, like a connector portal)
   workbench: 'workbench',
   studio: 'studio',
-  jukebox: 'jukebox'
+  jukebox: 'jukebox',
+  colorpress: 'press',   // fork: the COLORING BOOK PRESS
 };
 
 // (0) the two maps enumerate the SAME set of prop ids — a NEW cap prop added to the shipped map with no lock

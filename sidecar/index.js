@@ -82,7 +82,8 @@ const { makeImageTools } = require('./tools/builtin/image.js');           // STU
 const { makeConnectorTools } = require('./tools/builtin/connectors.js');  // WEB: connectors.list — what the station HAS wired, and what it could (read-only, no secrets)
 const { makeVoiceTools } = require('./tools/builtin/voice.js');           // STUDIO: voice_generate — speech saved into the workspace as a playable clip
 const { makeResolveTools } = require('./tools/builtin/resolve.js');       // STUDIO: DaVinci Resolve — FCPXML timelines (free) + live Studio control (Hermes-plugin port)
-const { makeSpotifyTools } = require('./tools/builtin/spotify.js');       // JUKEBOX: control/query the user's Spotify
+const { makeSpotifyTools } = require('./tools/builtin/spotify.js');
+const { makeColorbookTools } = require('./tools/builtin/colorbook.js');   // COLORING BOOK PRESS (fork): the venture pipeline       // JUKEBOX: control/query the user's Spotify
 const { makeSpotifyStore } = require('./spotify/store.js');               // Spotify OAuth (PKCE) token store + auto-refresh
 const spotifyPkce = require('./spotify/pkce.js');                          // pure PKCE helpers (verifier/challenge/urls)
 const { makeSaveStore } = require('./savestore.js');
@@ -18594,6 +18595,15 @@ async function runOnceCore(o) {
   // JUKEBOX (Spotify): registered every run, EXPOSED via a 'jukebox' object; no-op (clear error) until the user
   // connects Spotify in TOOLSETS. The OAuth session + auto-refresh live in the station-wide spotifyStore above.
   makeSpotifyTools({ store: spotifyStore }).register(registry);
+  // COLORING BOOK PRESS (fork): drives ventures/coloring-books in the venture's folder; exposed only via a placed 'press'.
+  makeColorbookTools({
+    spawn: childSpawn, redact,
+    ventureDir: () => ventureRoutes.ensureVentureDir('coloring-books'),
+    ventureView: () => ventureRoutes.viewKind('coloring-books'),
+    envFor: () => sanitizeChildEnv(process.env),
+    keyFor: (provider) => providerRuntimeKey(provider),
+    python: ENV('PYTHON') || undefined,
+  }).register(registry);
   // shell.exec (the workbench capability): registered every run, but only EXPOSED + dispatchable when a 'workbench'
   // object is in the agent's room (resolveTools gates it) — no object, no shell. redact() scrubs stdout of secrets.
   makeShellTool({ spawn: childSpawn, fs: fs, pathMod: path, root: WORKSPACES, environment: executionEnvironment, redact: redact, clock: { now: () => Date.now() }, bg: shellBg }).register(registry);

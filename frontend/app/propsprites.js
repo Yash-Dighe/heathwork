@@ -5302,6 +5302,49 @@ const PropSprites = (() => {
     if (on && blink(900, ph)) px(x + w - 3, T + 6, 1, 1, shade(T_LIT, 0.20));
   };
 
+  F.colorpress = (x, y, w, h, f) => {
+    /* COLORING BOOK PRESS (2x2, fork) — a cottage screw press seen from above-front: an oak frame with a
+       crossbeam, the iron screw and its red-knobbed turning bar, a platen pressing down onto a stack of paper whose
+       top sheet is a coloured-in page, and three ink pots (cyan, magenta, yellow) on the bed. While the press works
+       (f.work = a press_* tool is running) the screw bar turns and the page warms with lamplight. */
+    const on = !!(f && f.work), ph = (f && f.x) || 0;
+    const base = y + h, T = y - 6;
+    const OAK = '#8a5a2e', OAK_L = '#b07a40', OAK_D = '#55351a', IRON = '#5b6066', IRON_L = '#8d949a';
+    const PAPER = '#efe4c8', PAPER_D = '#c9b98f', EDGE = '#1c1410';
+    shadow2(x + 1, base - 1, w - 2);
+    // bed (the table the press stands on), seen from above: four rows of oak deck
+    px(x, base - 9, w, 8, EDGE);
+    for (let j = 0; j < 7; j++) px(x + 1, base - 8 + j, w - 2, 1, shade(OAK, -0.10 + j * 0.035));
+    px(x + 1, base - 8, 1, 7, OAK_L); px(x + w - 2, base - 8, 1, 7, OAK_D);
+    px(x + 1, base - 2, w - 2, 1, OAK_D);
+    // two uprights + crossbeam
+    px(x + 2, T, 3, base - T - 8, EDGE); px(x + w - 5, T, 3, base - T - 8, EDGE);
+    px(x + 3, T + 1, 1, base - T - 9, OAK_L); px(x + w - 4, T + 1, 1, base - T - 9, OAK_D);
+    px(x + 2, T, w - 4, 4, EDGE);
+    px(x + 3, T + 1, w - 6, 2, OAK); px(x + 3, T + 1, w - 6, 1, OAK_L);
+    // the screw + turning bar (the bar swings while working)
+    const cx = x + Math.floor(w / 2);
+    px(cx - 1, T + 4, 2, 5, IRON); px(cx - 1, T + 4, 1, 5, IRON_L);
+    const swing = on ? [-5, -2, 2, 5][Math.floor((now + ph * 97) / 220) % 4] : -5;
+    px(cx + Math.min(0, swing), T + 5, Math.abs(swing) + 1, 1, IRON_L);
+    px(cx + swing, T + 4, 2, 2, '#b8322a'); px(cx + swing, T + 4, 1, 1, '#e0574a');
+    // platen
+    px(x + 6, T + 9, w - 12, 2, EDGE); px(x + 7, T + 9, w - 14, 1, IRON_L);
+    // the paper stack under the platen, top sheet coloured in
+    const pyy = T + 11;
+    px(x + 6, pyy, w - 12, base - pyy - 9, PAPER_D);
+    px(x + 6, pyy, w - 12, 1, PAPER);
+    const sheet = [[0, '#f2b45a'], [3, '#e86a8a'], [6, '#6ab0e8'], [9, '#8cc46a']];
+    for (const [dx, c] of sheet) if (x + 7 + dx < x + w - 7) px(x + 7 + dx, pyy + 1, 2, 2, on ? c : shade(c, -0.25));
+    // ink pots on the bed
+    const pots = ['#3fb6d8', '#d8459a', '#f0cf3c'];
+    pots.forEach((c, i) => { px(x + 3 + i * 3, base - 6, 2, 2, EDGE); px(x + 3 + i * 3, base - 6, 2, 1, c); });
+    if (on) {
+      bloom(x + 6, pyy, w - 12, 3, '#ffb45a', 0.30);
+      if (blink(700, ph)) px(x + w - 4, base - 6, 1, 1, '#ffd98a');
+    }
+  };
+
   F.jukebox = (x, y, w, h, f) => {
     /* v66 JUKEBOX (1x2) — rebuilt to Andrew's reference (2026-08-16): a Wurlitzer read, top to bottom —
          chrome CROWN with a red gem -> timber-and-cream ARCH -> dark mechanism window -> cream SELECTION
@@ -10784,6 +10827,7 @@ const PropSprites = (() => {
     { id: "gigs_servercart", label: "SERVER CART", cat: "capability", tier: "functional", w: 1, h: 1, animated: true, blocks: true, desc: D_MEM },
     { id: "bridge_relaystack", label: "RELAY STACK", cat: "capability", tier: "functional", w: 1, h: 2, animated: true, blocks: true, desc: D_MEM },
     { id: "studio", label: "STUDIO", cat: "capability", tier: "functional", w: 2, h: 2, animated: true, blocks: true, desc: "CAPABILITY — gives the agent in this room a media studio (generate & analyze images). It glows magenta while an image renders." },
+    { id: "colorpress", label: "COLORING BOOK PRESS", cat: "capability", tier: "functional", w: 2, h: 2, animated: true, blocks: true, desc: "CAPABILITY — your coloring-book business. The agent in this room can research niches, plan books, draw pages and build KDP print files. You approve every page; anything that spends money asks first. It glows warm while the press runs." },
     // ISOLATION — seal a room off on the floor.
     { id: "airlock", label: "AIRLOCK", cat: "isolation", tier: "functional", w: 1, h: 1, animated: true, blocks: false, desc: "AIRLOCK — seals a room on the floor (a staging / merge gate); the agent's body can't path in or out. Click to cycle open / sealed / jammed." },
     // COMMAND — mission surfaces (functional-but-not-capability: they grant no tools; they make the
@@ -11202,7 +11246,7 @@ const PropSprites = (() => {
      pulseProp(propId, capType); draw() overlays a bright surge in that capability's accent that decays
      1 -> 0 over PULSE_MS. Colors ride the station's semantic economy (amber=files, cyan=web/data,
      green=memory, magenta=media, gold=audio). */
-  const CAP_GLOW = { cabinet: '#e8c860', dish: '#4ad9ff', notebook: '#41ff8a', studio: '#ff6ad5', jukebox: '#ffd34a' };
+  const CAP_GLOW = { cabinet: '#e8c860', dish: '#4ad9ff', notebook: '#41ff8a', studio: '#ff6ad5', jukebox: '#ffd34a', press: '#ffb45a' };
   const PROP_FAIL = '#ff5c5c';   // a DENIED/FAILED tool call — the workbench verify-red cue, generalized
   const propPulse = {};          // propId -> { at, cap, bad }
   // ok defaults true (the success surge). ok===false => a distinct RED failure cue (denied/errored tool call) —

@@ -55,7 +55,8 @@ const ToolProps = (() => {
     ['skill.', 'notebook'],
     ['image_', 'studio'],
     ['resolve_', 'studio'],   // DaVinci Resolve edit bay — cutting timelines is studio work (tools/builtin/resolve.js)
-    ['spotify_', 'jukebox']
+    ['spotify_', 'jukebox'],
+    ['press_', 'press']       // fork: the COLORING BOOK PRESS pulses while the pipeline runs
   ];
 
   /* the mapper: real tool name -> capability prop type ('cabinet'|'dish'|'notebook'|'studio'|'jukebox') or null */

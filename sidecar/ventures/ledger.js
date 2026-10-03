@@ -142,4 +142,55 @@ function markPublished(dir, slug, rec) {
   return b.published;
 }
 
-module.exports = { readVenture, importSales, markPublished, STAGES };
+/* PAGE REVIEW — the Commander's approval step, the same semantics as the colorbook CLI (approve / choose / reject):
+     approve: [n]                 status → approved (needs a chosen variant)
+     choose:  [{ n, file }]       use another generated variant for page n
+     reject:  [{ n, note }]       status → rejected; the chosen variant is flagged so QC never re-picks it; the
+                                  note rides the page's next generate prompt
+   Writes only book.json, atomically. */
+function pagesFor(dir, slug) {
+  if (!/^[a-z0-9][a-z0-9-]{0,80}$/.test(String(slug))) throw new Error('bad book id');
+  const b = readJson(path.join(dir, 'books', slug, 'book.json'), null);
+  if (!b) throw new Error('no such book');
+  const concept = new Map(((b.plan && b.plan.pages) || []).map(c => [c.n, c]));
+  return { book: { slug, title: (b.plan && b.plan.title) || slug, complexity: (b.plan && b.plan.complexity) || '' },
+    pages: (b.pages || []).map(p => ({ n: p.n, title: (concept.get(p.n) || {}).title || '', scene: (concept.get(p.n) || {}).scene || '',
+      status: p.status, chosen: p.chosen || null, notes: p.notes || [],
+      variants: (p.variants || []).map(v => ({ file: v.file, score: v.score == null ? null : v.score, flags: v.flags || [] })) })) };
+}
+function reviewPages(dir, slug, ops) {
+  if (!/^[a-z0-9][a-z0-9-]{0,80}$/.test(String(slug))) throw new Error('bad book id');
+  const file = path.join(dir, 'books', slug, 'book.json');
+  const b = readJson(file, null);
+  if (!b) throw new Error('no such book');
+  const page = n => { const p = (b.pages || []).find(x => x.n === Number(n)); if (!p) throw new Error('no page ' + n); return p; };
+  let changed = 0;
+  for (const c of ops.choose || []) {
+    const p = page(c.n);
+    if (!(p.variants || []).some(v => v.file === c.file)) throw new Error('page ' + c.n + ' has no variant ' + c.file);
+    p.chosen = c.file; if (p.status === 'rejected') p.status = 'generated'; changed++;
+  }
+  for (const n of ops.approve || []) {
+    const p = page(n);
+    if (!p.chosen) throw new Error('page ' + n + ' has no chosen image yet (run qc first)');
+    p.status = 'approved'; changed++;
+  }
+  for (const r of ops.reject || []) {
+    const p = page(r.n);
+    if (p.chosen) {
+      const v = (p.variants || []).find(x => x.file === p.chosen);
+      if (v) { v.flags = v.flags || []; if (!v.flags.includes('rejected in review')) v.flags.push('rejected in review'); }
+      p.chosen = null;
+    }
+    p.status = 'rejected';
+    const note = String(r.note || '').trim().slice(0, 300);
+    if (note) p.notes = (p.notes || []).concat([note]);
+    changed++;
+  }
+  const tmp = file + '.' + process.pid + '.tmp';
+  fs.writeFileSync(tmp, JSON.stringify(b, null, 2));
+  fs.renameSync(tmp, file);
+  return { changed };
+}
+
+module.exports = { readVenture, importSales, markPublished, pagesFor, reviewPages, STAGES };

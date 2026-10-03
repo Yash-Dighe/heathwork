@@ -353,6 +353,15 @@
       { capId: 'jukebox', tool: 'spotify_next', scope: 'execute', requiresConsent: true, network: true },
       { capId: 'jukebox', tool: 'spotify_previous', scope: 'execute', requiresConsent: true, network: true },
       { capId: 'jukebox', tool: 'spotify_queue', scope: 'execute', requiresConsent: true, network: true }
+    ],
+    // COLORING BOOK PRESS (fork): the coloring-book venture pipeline (tools/builtin/colorbook.js). Reading the press
+    // and its free LOCAL steps (qc, build PDFs, review sheet) need no consent; every step that spends API money
+    // (research, plan, page/cover generation, vision checks, listing copy) is execute + consent. Approving pages and
+    // marking a book live are the Commander's, so no grant here can do either.
+    press: [
+      { capId: 'press', tool: 'press_status', scope: 'read', requiresConsent: false, network: false },
+      { capId: 'press', tool: 'press_make', scope: 'write', requiresConsent: false, network: false },
+      { capId: 'press', tool: 'press_spend', scope: 'execute', requiresConsent: true, network: true }
     ]
   };
 
