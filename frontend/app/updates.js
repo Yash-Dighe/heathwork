@@ -12,7 +12,7 @@ const Updates = (() => {
   // Kept in sync with tauri.conf.json plugins.updater.endpoints[0] (same repo, /releases/latest).
   // fork: RELEASES_PAGE is written by scripts/rebrand.mjs from brand.json "github" (keep it a literal:
   // test/update-state-parity.test.js locks it to the updater endpoint's owner/repo).
-  const RELEASES_PAGE = ''; // @rebrand:releases-page
+  const RELEASES_PAGE = 'https://github.com/Yash-Dighe/heathwork/releases/latest'; // @rebrand:releases-page
   // With no updater endpoint configured in brand.json, the in-app updater stays off (no check, no error).
   const UPDATER_CONFIGURED = typeof BRAND === 'undefined' || !!(BRAND.urls && BRAND.urls.updaterEndpoint);
   const CORE = (typeof UpdateCore !== 'undefined') ? UpdateCore : null;

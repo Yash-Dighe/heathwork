@@ -34,8 +34,8 @@ on:
       tag:
         description: "Tag to build, e.g. v0.2.0 (must equal v<version> from tauri.conf.json)"
         required: true
-  push:
-    tags: ['v*']
+  # fork: StarNet's signed release train (his Authenticode/notarization secrets) no longer fires on tags.
+  # A Hearthwork release workflow replaces it once the updater key and repo are set up.
 
 jobs:
   # -------------------------------------------------------------------------------------------

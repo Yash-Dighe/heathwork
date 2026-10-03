@@ -6,7 +6,7 @@ const BRAND = Object.freeze({
   "tagline": "A cozy pixel village where real AI agents do real work.",
   "urls": {
     "website": "",
-    "releasesPage": "",
+    "releasesPage": "https://github.com/Yash-Dighe/heathwork/releases/latest",
     "updaterEndpoint": "",
     "pricing": "",
     "privacy": "",

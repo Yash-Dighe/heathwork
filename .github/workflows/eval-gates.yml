@@ -17,8 +17,6 @@ name: eval-gates
 
 on:
   pull_request:
-  push:
-    branches: [feat/harness-backend]
 
 jobs:
   credential-free-evals:

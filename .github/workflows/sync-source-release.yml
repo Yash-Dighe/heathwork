@@ -4,10 +4,9 @@
 # creates the source release draft-first so a failed copy can never expose a partial release.
 name: sync-source-release
 
+# fork: the 15-minute mirror to StarNet's source-release repo is off; manual only.
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "7,22,37,52 * * * *"
 
 permissions:
   contents: write

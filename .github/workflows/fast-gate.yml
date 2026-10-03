@@ -11,8 +11,7 @@ name: fast-gate
 
 on:
   pull_request:
-  push:
-    branches: [feat/harness-backend]
+  # fork: runs on pull requests and on demand (it is ~1,000 tests; on a private repo each run uses Actions minutes)
   workflow_dispatch:
 
 permissions:
