@@ -16,6 +16,7 @@
 <link rel="preload" href="assets/fonts/vt323.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/sprites/approved_android/rot_south.png" as="image" fetchpriority="high">
 <link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/workshop.css">
 <link rel="stylesheet" href="css/app.css">
 <link rel="stylesheet" href="css/comms.css">
 <link rel="stylesheet" href="css/marketplace.css">
@@ -741,6 +742,7 @@
              FAMILIES). Each tab is still its own window, so every deep link and slash command lands exactly as before. -->
         <button class="bb" id="bb-mywork" data-family="mywork" data-hint="mywork"><span class="bb-i">☑</span><span class="bb-tx"><b>MY WORK</b><small>tasks, finished work &amp; ready-made jobs</small></span></button>
         <button class="bb" id="bb-automate" data-family="automate" data-hint="automate"><span class="bb-i">∞</span><span class="bb-tx"><b>AUTOMATE</b><small>workflows, schedules &amp; goal loops</small></span></button>
+        <button class="bb" data-term="ventures" data-hint="ventures"><span class="bb-i">✎</span><span class="bb-tx"><b>WORKSHOP</b><small>your businesses — books, sales, levels &amp; milestones</small></span></button>
         <button class="bb" data-term="quests" data-hint="quest"><span class="bb-i">⚑</span><span class="bb-tx"><b>QUESTS</b><small>small steps toward your goals &amp; recorded progress</small></span></button>
       </div>
     </div>
@@ -955,7 +957,8 @@
 <script src="app/railicons.js"></script><!-- RAIL ICONS: one drawn 16px line-icon set for every window side menu -->
 <script src="app/stationui.js"></script>
 <!-- extracted station windows — each registers itself via StationUI.registerWindow, so they MUST load after stationui.js and before app.js init -->
-<script src="app/windows/trophies.js"></script><!-- TROPHY CASE — real earned achievements + the LIVING TOOLS shelf -->
+<script src="app/windows/trophies.js"></script>
+<script src="app/windows/workshop.js"></script><!-- WORKSHOP — business ventures as the village game (fork) -->
 <script src="app/windows/logbook.js"></script><!-- LOGBOOK dossier lane — per-agent run history (RUNS · SLAG · INSIGHTS; mounts in the AGENTS dossier). Registration order = dossier tab order: LOGBOOK before RESTORE. -->
 <script src="app/windows/rewind.js"></script><!-- RESTORE dossier lane — per-agent workspace checkpoints, two-step confirmed restore (mounts in the AGENTS dossier) -->
 <script src="app/windows/outbox.js"></script><!-- OUTBOX — FINISHED WORK: uncollected finished runs, readable + rateable accordion -->

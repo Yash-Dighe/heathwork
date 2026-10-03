@@ -4637,6 +4637,8 @@ const browserViews = makeBrowserViews({
   })
 });
 const browserViewRoutes = makeViewRoutes({ views: browserViews, readBody, respondJson });
+/* THE WORKSHOP (fork): business ventures the village runs — ledgers + the venture game layer (sidecar/ventures/). */
+const ventureRoutes = require('./ventures/routes.js').makeVentureRoutes({ root: path.join(WORKSPACES, 'ventures'), readBody, readBodyBuffer, respondJson, now: () => Date.now() });
 
 // H2.2: the SINGLETON background-process manager — persists across runs so a backgrounded dev server survives the
 // run that started it. shell.bg.exit fires AFTER the originating run's NDJSON stream closed, so it rides the
@@ -10644,6 +10646,7 @@ const ROUTES = [
   { m: 'POST', qsplit: '/api/stt', h: media.handleStt, errorPolicy: media.sttFailOpenPolicy },
   { m: 'POST', exact: '/api/cancel', h: handleCancel },
   ...browserViewRoutes.routes,      // BROWSER window: /api/browser/view* (sidecar/browser-view.js)
+  ...ventureRoutes.routes,          // WORKSHOP: /api/ventures* (sidecar/ventures/routes.js)
   ...browserHandoffRoutes.routes,   // STEP-IN: /api/browser/handoff* + /api/browser/signins* (sidecar/browser-handoff-routes.js)
   { m: 'POST', exact: '/api/run/steer', h: handleRunSteer },
   { m: 'GET', exact: '/api/version', h: handleVersion },
