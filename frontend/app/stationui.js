@@ -110,7 +110,7 @@ const StationUI = typeof document === 'undefined' ? {} : (() => {
   // panelBright (−100…100, default 0) is the tube's BRIGHTNESS knob: above 0 it lifts the panel glass's black
   // level toward the phosphor colour (never toward white); below 0 it takes the panels DOWN toward true black
   // (Andrew 10-01: "it doesnt get dark enough"). 0 = the shipped look, untouched.
-  function defaults() { return { theme: 'hearth', themeHue: 34, themeSat: 70, themeGlow: 60, panelBright: 0, roomLighting: 'low', textScale: 0, flicker: false, crtGlass: 'dulled', staticLevel: 0, sound: true, backdrop: 'meadow', sessionRow: 'compact', keepComputerAwake: false, notifyPrefs: notifyDefaults() }; }
+  function defaults() { return { theme: 'hearth', themeHue: 34, themeSat: 70, themeGlow: 60, panelBright: 0, roomLighting: 'high', textScale: 0, flicker: false, crtGlass: 'dulled', staticLevel: 0, sound: true, backdrop: 'meadow', sessionRow: 'compact', keepComputerAwake: false, notifyPrefs: notifyDefaults() }; }
   // Raise overall room exposure without changing the distribution of its lights.
   // Existing saves retain their chosen level; missing values start at LOW.
   const ROOM_LIGHTING_STEPS = [

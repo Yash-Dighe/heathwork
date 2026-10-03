@@ -33,7 +33,7 @@ for (const level of ['medium', 'high']) {
 assert.equal(rebakes, 2, 'both brightness changes reach the renderer');
 api.apply('low');
 assert.deepEqual(bake.LIGHT, original, 'LOW restores the exact approved light controls');
-assert.match(src, /roomLighting: 'low'/);
+assert.match(src, /roomLighting: 'high'/);   // fork: the cottage defaults to brighter rooms
 assert.match(src, /applyRoomLighting\(s\.roomLighting\)/);
 assert.match(src, /roomLighting: resolveRoomLighting\(store\.settings\.roomLighting\)/, 'backup includes lighting');
 assert.match(src, /applyRoomLighting\(s\.roomLighting\); save\(\)/, 'selection is applied and persisted');
