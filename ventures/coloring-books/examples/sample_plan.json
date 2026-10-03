@@ -1,0 +1,20 @@
+{
+  "title": "Cozy Cottage Kitchens",
+  "subtitle": "An Adult Coloring Book of Warm Kitchens, Fresh Bakes and Slow Mornings for Relaxation",
+  "audience": "adult",
+  "theme": "Cottagecore kitchens and baking",
+  "complexity": "medium",
+  "style_prompt": "Storybook cottagecore illustration with gentle hand-drawn charm, rounded forms, wooden textures shown only with outlines, plants and patterned fabrics, warm and uncluttered.",
+  "cover_scene": "A sunlit cottage kitchen counter with a fresh pie cooling by an open window, herbs in pots, a teapot and a sleeping cat on a chair.",
+  "back_blurb": "Slow down and step into the coziest kitchens you've ever imagined.\nEach design is printed on its own page with a blank back, so markers won't bleed through.",
+  "pages": [
+    {"n": 1, "title": "Pie by the window", "scene": "A lattice-top pie cooling on a windowsill with gingham curtains and potted herbs."},
+    {"n": 2, "title": "Teapot shelf", "scene": "A wooden shelf crowded with mismatched teapots, cups and a trailing ivy plant."},
+    {"n": 3, "title": "Bread morning", "scene": "Rustic loaves on a cutting board with a flour sack, wheat stalks and a rolling pin."},
+    {"n": 4, "title": "Jam jars", "scene": "Rows of jam jars with fabric lids and handwritten-style blank labels beside a basket of berries."},
+    {"n": 5, "title": "Cat on the chair", "scene": "A curled-up cat sleeping on a cushioned kitchen chair next to a wood stove."},
+    {"n": 6, "title": "Herb garden sill", "scene": "Terracotta pots of basil, rosemary and mint lined up on a kitchen windowsill."},
+    {"n": 7, "title": "Cookie tray", "scene": "A baking tray of decorated cookies with cookie cutters, a whisk and a mixing bowl."},
+    {"n": 8, "title": "Breakfast nook", "scene": "A small round table set for breakfast with pancakes, a vase of daisies and two mugs."}
+  ]
+}

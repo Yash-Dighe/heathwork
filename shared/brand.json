@@ -1,0 +1,17 @@
+{
+  "name": "Hearthwork",
+  "nameUpper": "HEARTHWORK",
+  "identifier": "app.hearthwork.desktop",
+  "tagline": "A cozy pixel village where real AI agents do real work.",
+  "urls": {
+    "website": "",
+    "releasesPage": "",
+    "updaterEndpoint": "",
+    "pricing": "",
+    "privacy": "",
+    "cloud": "",
+    "remoteRelay": "",
+    "skillCatalog": ""
+  },
+  "_comment": "Run `node scripts/rebrand.mjs` after editing. Empty URLs switch the matching feature off (updates, cloud credits, phone relay, skill market)."
+}

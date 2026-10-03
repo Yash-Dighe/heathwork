@@ -1,0 +1,28 @@
+[project]
+name = "colorbook"
+version = "0.1.0"
+description = "Niche research -> AI line art -> QC -> KDP-ready coloring book (interior PDF, cover PDF, listing)"
+requires-python = ">=3.11"
+dependencies = [
+  "anthropic>=1.0",
+  "openai>=2.0",
+  "pillow>=10",
+  "numpy>=1.26",
+  "scipy>=1.11",
+  "reportlab>=4",
+  "pydantic>=2.6",
+  "typer>=0.12",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "pypdf>=4"]
+
+[project.scripts]
+colorbook = "colorbook.cli:app"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
