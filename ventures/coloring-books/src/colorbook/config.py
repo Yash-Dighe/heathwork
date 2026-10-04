@@ -8,6 +8,19 @@ from pathlib import Path
 
 @dataclass
 class Settings:
+    # Which services do the work. "auto" picks from the keys present:
+    #   text  (research, plans, vision QC, listings): ANTHROPIC_API_KEY → claude, else GEMINI_API_KEY → gemini
+    #   images (pages, cover):                        OPENAI_API_KEY → openai,  else GEMINI_API_KEY → gemini
+    text_provider: str = "auto"    # auto | anthropic | gemini
+    image_provider: str = "auto"   # auto | openai | gemini
+
+    # Gemini (one key covers text + images; the API has a free tier — on it, Google may use your prompts and
+    # outputs to improve its products)
+    gemini_text_model: str = "gemini-3.8-flash"
+    gemini_image_model: str = "gemini-3.1-flash-image"
+    gemini_image_size: str = "2K"  # ImageConfig.image_size; pages are upscaled to 300 DPI either way
+    gemini_est_cost_per_image: float = 0.0  # free tier; set your paid rate if you upgrade
+
     # Claude: planning, research, listing copy, vision QC
     text_model: str = "claude-sonnet-5-5"
     vision_model: str = "claude-sonnet-5-5"
@@ -62,6 +75,38 @@ _FONT_CANDIDATES = {
         "C:/Windows/Fonts/georgiab.ttf",
     ],
 }
+
+
+def gemini_key() -> str:
+    return os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY") or ""
+
+
+def image_cost(s: "Settings") -> float:
+    """Estimated USD per generated image for the active image provider (spend estimates only)."""
+    try:
+        return s.gemini_est_cost_per_image if resolve_image_provider(s) == "gemini" else s.est_cost_per_image
+    except RuntimeError:
+        return s.est_cost_per_image
+
+
+def resolve_text_provider(s: "Settings") -> str:
+    if s.text_provider in ("anthropic", "gemini"):
+        return s.text_provider
+    if os.environ.get("ANTHROPIC_API_KEY"):
+        return "anthropic"
+    if gemini_key():
+        return "gemini"
+    raise RuntimeError("No text model key: set ANTHROPIC_API_KEY or GEMINI_API_KEY (Gemini has a free tier).")
+
+
+def resolve_image_provider(s: "Settings") -> str:
+    if s.image_provider in ("openai", "gemini"):
+        return s.image_provider
+    if os.environ.get("OPENAI_API_KEY"):
+        return "openai"
+    if gemini_key():
+        return "gemini"
+    raise RuntimeError("No image model key: set OPENAI_API_KEY or GEMINI_API_KEY (Gemini has a free tier).")
 
 
 def find_font(kind: str, settings: Settings) -> str:

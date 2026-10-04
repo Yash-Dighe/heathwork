@@ -12,7 +12,7 @@ from typing import Callable, Iterable, Optional
 from PIL import Image
 
 from . import prompts, qc
-from .config import Settings
+from .config import Settings, image_cost
 from .images import ImageProvider
 from .llm import LLM
 from .models import (Book, BookPlan, BookStore, Listing, NicheReport, Variant,
@@ -89,8 +89,13 @@ def generate_pages(book: Book, store: BookStore, provider: ImageProvider, settin
     if not jobs:
         log("Nothing to generate (pages already generated/approved; use --force to redo).")
         return
-    log(f"Generating {len(jobs)} images ({settings.image_model}, {settings.image_size}, "
-        f"~${len(jobs) * settings.est_cost_per_image:.2f} est.)")
+    from .config import resolve_image_provider
+    try:
+        model = settings.gemini_image_model if resolve_image_provider(settings) == "gemini" else settings.image_model
+    except RuntimeError:
+        model = "mock"
+    log(f"Generating {len(jobs)} images ({model}, {settings.image_size}, "
+        f"~${len(jobs) * image_cost(settings):.2f} est.)")
 
     def work(job):
         n, v, prompt = job
@@ -298,6 +303,6 @@ def status_lines(book: Book, settings: Settings) -> list[str]:
         f"{book.plan.title} ({book.slug})",
         f"  pages: " + ", ".join(f"{k}={v}" for k, v in sorted(counts.items())),
         f"  cover art: {book.cover_art or 'none'} · listing: {'yes' if book.listing else 'no'}",
-        f"  usage: {u.image_calls} images (~${u.image_calls * settings.est_cost_per_image:.2f}), "
+        f"  usage: {u.image_calls} images (~${u.image_calls * image_cost(settings):.2f}), "
         f"{u.llm_input_tokens:,} in / {u.llm_output_tokens:,} out tokens, {u.web_searches} searches",
     ]

@@ -25,7 +25,7 @@ const view = { metrics: { books: [{ slug: 'b1', title: 'Book One', stage: 'revie
 
 (async () => {
   const calls = [];
-  const keys = { anthropic: 'sk-ant-TEST', openai: '' };
+  const keys = { anthropic: 'sk-ant-TEST', openai: '', gemini: '' };
   const T = makeColorbookTools({ spawn: fakeSpawn(calls, 0, 'done'), ventureDir: () => '/v', ventureView: () => view,
     envFor: () => ({ PATH: '/bin' }), keyFor: p => keys[p] || '', python: 'py' });
   const [status, make, spendTool] = T.tools;
@@ -49,14 +49,21 @@ const view = { metrics: { books: [{ slug: 'b1', title: 'Book One', stage: 'revie
 
   let err = null;
   try { await spendTool.run({ op: 'generate', book: 'b1', pages: '1-3' }); } catch (e) { err = e; }
-  A.ok(err && /No OpenAI key/.test(err.message), 'drawing pages without an OpenAI key fails with a fix, before spawning anything');
+  A.ok(err && /No OpenAI or Gemini key/.test(err.message), 'drawing pages with no image key fails with a fix, before spawning anything');
   A.eq(calls.length, 2, 'nothing was spawned for the refused call');
+
+  // a Gemini key alone runs everything: it is passed through, and no Anthropic/OpenAI key is invented
+  keys.anthropic = ''; keys.gemini = 'AIza-TEST';
+  await spendTool.run({ op: 'generate', book: 'b1', pages: '1-3' });
+  await spendTool.run({ op: 'plan', niche: 'owls' });
+  A.eq([calls[2].opts.env.GEMINI_API_KEY, 'OPENAI_API_KEY' in calls[2].opts.env, 'ANTHROPIC_API_KEY' in calls[3].opts.env], ['AIza-TEST', false, false],
+    'Gemini-only station: drawing and planning both run on the Gemini key');
 
   for (const bad of [{ op: 'generate', book: '../../etc' }, { op: 'generate', book: 'b1', pages: '1;rm -rf /' }, { op: 'plan' }, { op: 'plan', niche: 'x', audience: 'aliens' }]) {
     let e = null; try { await spendTool.run(bad); } catch (x) { e = x; }
     A.ok(!!e, 'refused: ' + JSON.stringify(bad));
   }
-  A.eq(calls.length, 2, 'refused inputs never reach a process');
+  A.eq(calls.length, 4, 'refused inputs never reach a process');
 
   const failing = makeColorbookTools({ spawn: fakeSpawn([], 1, "No module named 'colorbook'"), ventureDir: () => '/v', ventureView: () => view, envFor: () => ({}), keyFor: () => 'k' });
   err = null; try { await failing.tools[1].run({ op: 'qc', book: 'b1' }); } catch (e) { err = e; }

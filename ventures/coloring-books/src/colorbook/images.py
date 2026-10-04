@@ -82,5 +82,62 @@ class MockImages:
         return buf.getvalue()
 
 
+GEMINI_RATIOS = {"1:1": 1.0, "3:4": 0.75, "4:5": 0.8, "2:3": 0.6667, "4:3": 1.3333, "3:2": 1.5, "9:16": 0.5625, "16:9": 1.7778}
+
+
+def nearest_ratio(size: str) -> str:
+    w, h = (int(x) for x in size.lower().split("x"))
+    r = w / h
+    return min(GEMINI_RATIOS, key=lambda k: abs(GEMINI_RATIOS[k] - r))
+
+
+class GeminiImages:
+    """Gemini image models ("Nano Banana"). Size is honoured as an aspect ratio; resolution via image_size."""
+
+    def __init__(self, settings: Settings, client=None):
+        if client is None:
+            from google import genai
+
+            from .config import gemini_key
+
+            client = genai.Client(api_key=gemini_key())
+        self.client = client
+        self.s = settings
+
+    def generate(self, prompt: str, size: str) -> bytes:
+        from google.genai import types
+
+        from .llm import _retrying
+
+        cfg = types.GenerateContentConfig(
+            automatic_function_calling=types.AutomaticFunctionCallingConfig(disable=True),
+            response_modalities=["IMAGE"],
+            image_config=types.ImageConfig(aspect_ratio=nearest_ratio(size), image_size=self.s.gemini_image_size),
+        )
+        resp = _retrying(lambda: self.client.models.generate_content(
+            model=self.s.gemini_image_model, contents=prompt, config=cfg))
+        for cand in getattr(resp, "candidates", None) or []:
+            for part in getattr(getattr(cand, "content", None), "parts", None) or []:
+                blob = getattr(part, "inline_data", None)
+                if blob is not None and getattr(blob, "data", None):
+                    data = blob.data if isinstance(blob.data, (bytes, bytearray)) else base64.b64decode(blob.data)
+                    if (blob.mime_type or "").lower() != "image/png":   # normalise to PNG for the pipeline
+                        im = Image.open(io.BytesIO(data))
+                        out = io.BytesIO()
+                        im.save(out, format="PNG")
+                        data = out.getvalue()
+                    return bytes(data)
+        reason = ""
+        try:
+            reason = str(resp.candidates[0].finish_reason)
+        except (AttributeError, IndexError, TypeError):
+            reason = str(getattr(getattr(resp, "prompt_feedback", None), "block_reason", "") or "")
+        raise RuntimeError("Gemini returned no image" + (f" ({reason})" if reason else ""))
+
+
 def make_provider(settings: Settings, mock: bool) -> ImageProvider:
-    return MockImages() if mock else OpenAIImages(settings)
+    if mock:
+        return MockImages()
+    from .config import resolve_image_provider
+
+    return GeminiImages(settings) if resolve_image_provider(settings) == "gemini" else OpenAIImages(settings)

@@ -14,7 +14,8 @@
    Amazon are the Commander's decisions (WORKSHOP window), so the tools simply do not offer them.
 
    The child gets a sanitized environment (sanitizeChildEnv strips every inherited secret) plus exactly two keys
-   from the station's own provider store: ANTHROPIC_API_KEY and OPENAI_API_KEY. argv only — never a shell.
+   from the station's own provider store: ANTHROPIC_API_KEY, OPENAI_API_KEY and GEMINI_API_KEY (whichever exist; the
+   pipeline picks Claude or Gemini for text, OpenAI or Gemini for images). argv only — never a shell.
 
    makeColorbookTools({ spawn, fs, pathMod, ventureDir, ventureView, envFor, keyFor, python, redact })
      ventureDir()   -> absolute folder of the coloring-book venture (created on first use)
@@ -71,11 +72,12 @@
       const cwd = ventureDir();
       const env = Object.assign({}, envFor(), { PYTHONUNBUFFERED: '1', PYTHONIOENCODING: 'utf-8' });
       if (needsKeys) {
-        const a = keyFor('anthropic'), o = keyFor('openai');
-        if (needsKeys.includes('anthropic') && !a) return Promise.resolve({ ok: false, text: 'No Anthropic key is saved in the station (SETTINGS → PROVIDERS). The press uses Claude for research, plans, vision checks and listings.' });
-        if (needsKeys.includes('openai') && !o) return Promise.resolve({ ok: false, text: 'No OpenAI key is saved in the station (SETTINGS → PROVIDERS). The press draws pages with GPT Image.' });
+        const a = keyFor('anthropic'), o = keyFor('openai'), g = keyFor('gemini');
+        if (needsKeys === 'text' && !a && !g) return Promise.resolve({ ok: false, text: 'No Anthropic or Gemini key is saved in the station (SETTINGS → PROVIDERS). The press needs one of them for research, plans, vision checks and listings — Gemini has a free tier.' });
+        if (needsKeys === 'image' && !o && !g) return Promise.resolve({ ok: false, text: 'No OpenAI or Gemini key is saved in the station (SETTINGS → PROVIDERS). The press needs one of them to draw pages — Gemini has a free tier.' });
         if (a) env.ANTHROPIC_API_KEY = a;
         if (o) env.OPENAI_API_KEY = o;
+        if (g) env.GEMINI_API_KEY = g;
       }
       return new Promise(resolve => {
         let out = '', done = false;
@@ -132,7 +134,7 @@
       description: 'Run a step of the coloring-book pipeline that SPENDS API money (the Commander approves each call): '
         + 'op "research" (seed) researches niches with web search; "plan" (niche or fromResearch+pick, audience, complexity, pages) '
         + 'plans a book: title, shared art style and one scene per page; "generate" (book, optional pages like "1-3", variants 1-3) '
-        + 'draws line-art pages with GPT Image (~$0.17–0.25 per image at high quality); "cover" draws the color cover art; '
+        + 'draws line-art pages (GPT Image ~$0.17–0.25 per image at high quality; the Gemini image model has a free tier); "cover" draws the color cover art; '
         + '"vision" has Claude inspect every page for text artifacts and malformed anatomy; "listing" writes the Amazon '
         + 'title, description, 7 keywords and price. Generate a 3-page pilot first and let the Commander check the style '
         + 'before drawing a whole book. Never use trademarked characters or brands.',
@@ -143,7 +145,7 @@
         variants: { type: 'number' } } },
       async run(args, ctx) {
         const argv = SPEND[args.op](args);                     // throws on bad input → the dispatcher reports it
-        const keys = { research: ['anthropic'], plan: ['anthropic'], generate: ['openai'], cover: ['openai'], vision: ['anthropic'], listing: ['anthropic'] }[args.op];
+        const keys = { research: 'text', plan: 'text', generate: 'image', cover: 'image', vision: 'text', listing: 'text' }[args.op];
         const r = await run(argv, ctx, keys);
         if (!r.ok) throw new Error(r.text || ('press ' + args.op + ' failed'));
         return { content: r.text || '(no output)', summary: 'press ' + args.op + (args.book ? ' ' + args.book : '') };

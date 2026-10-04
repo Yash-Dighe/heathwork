@@ -22,7 +22,7 @@ import typer
 from . import pipeline, render
 from .config import Settings
 from .images import make_provider
-from .llm import LLM
+from .llm import make_llm
 from .models import BookPlan, BookStore, NicheReport
 
 app = typer.Typer(add_completion=False, no_args_is_help=True, help=__doc__)
@@ -47,7 +47,7 @@ def _load(store: BookStore, slug: str):
 def research(seed: str = typer.Argument(..., help="Theme or idea to research, e.g. 'cozy autumn'")):
     """Research niches around a seed idea (Claude with web search)."""
     s, _ = _ctx()
-    llm = LLM(s)
+    llm = make_llm(s)
     md, report = pipeline.research(llm, seed, Path("research"))
     typer.echo(f"Saved {md} and {md.with_suffix('.json')}\n")
     for i, c in enumerate(report.candidates, 1):
@@ -85,7 +85,7 @@ def plan(
             research_file = str(base.with_suffix(".md"))
         if not niche:
             raise typer.BadParameter("Give --niche or --from-research")
-        llm = LLM(s)
+        llm = make_llm(s)
         bp = pipeline.plan_book(llm, niche, audience, complexity, pages, notes)
     slug = slug or pipeline.slugify(bp.title)
     if store.exists(slug):
@@ -132,7 +132,7 @@ def qc_cmd(
     """Score variants (pixel heuristics, optional Claude vision) and pick the best per page."""
     s, store = _ctx()
     b = _load(store, book)
-    llm = LLM(s, usage=b.usage) if vision else None
+    llm = make_llm(s, usage=b.usage) if vision else None
     pipeline.run_qc(b, store, pipeline.parse_pages(pages, [p.n for p in b.pages]), llm, _log)
     store.save(b)
     typer.echo(f"Next: colorbook review {book}")
@@ -191,7 +191,7 @@ def listing(book: str):
     """Write the Amazon listing (title, description, 7 keywords, price) to listing.md."""
     s, store = _ctx()
     b = _load(store, book)
-    out = pipeline.write_listing(b, store, LLM(s, usage=b.usage))
+    out = pipeline.write_listing(b, store, make_llm(s, usage=b.usage))
     store.save(b)
     typer.echo(f"Listing: {out}")
 
