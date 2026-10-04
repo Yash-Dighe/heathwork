@@ -124,7 +124,7 @@ def test_auto_provider_selection(monkeypatch):
     monkeypatch.setenv("GEMINI_API_KEY", "g")
     assert cfg.resolve_text_provider(s) == "gemini" and cfg.resolve_image_provider(s) == "gemini"
     assert isinstance(make_llm(s), GeminiLLM)
-    assert cfg.image_cost(s) == 0.0
+    assert cfg.image_cost(s) == 0.101
     monkeypatch.setenv("ANTHROPIC_API_KEY", "a")
     monkeypatch.setenv("OPENAI_API_KEY", "o")
     assert cfg.resolve_text_provider(s) == "anthropic" and cfg.resolve_image_provider(s) == "openai"

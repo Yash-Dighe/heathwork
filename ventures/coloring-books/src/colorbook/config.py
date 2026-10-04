@@ -14,12 +14,12 @@ class Settings:
     text_provider: str = "auto"    # auto | anthropic | gemini
     image_provider: str = "auto"   # auto | openai | gemini
 
-    # Gemini (one key covers text + images; the API has a free tier — on it, Google may use your prompts and
-    # outputs to improve its products)
+    # Gemini (one key covers text + images). Use a key from a billed project: on the paid tier Google does not
+    # use your content to improve its products (the free tier does).
     gemini_text_model: str = "gemini-3.8-flash"
     gemini_image_model: str = "gemini-3.1-flash-image"
     gemini_image_size: str = "2K"  # ImageConfig.image_size; pages are upscaled to 300 DPI either way
-    gemini_est_cost_per_image: float = 0.0  # free tier; set your paid rate if you upgrade
+    gemini_est_cost_per_image: float = 0.101  # paid tier, 2K image (Oct 2026: 0.5K $0.045 · 1K $0.067 · 4K $0.151)
 
     # Claude: planning, research, listing copy, vision QC
     text_model: str = "claude-sonnet-5-5"
